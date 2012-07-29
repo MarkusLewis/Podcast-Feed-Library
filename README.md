@@ -15,6 +15,9 @@ __Get Episodes__
 		System.out.println("Episode Title - " + episode.getTitle());
 	}
 
+##Dependencies
+[dom4j](http://dom4j.sourceforge.net/) _xml parsing library_
+
 ##License
 	Copyright (c) 2012 Icosillion
 
