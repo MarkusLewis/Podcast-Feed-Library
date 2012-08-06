@@ -440,4 +440,8 @@ public class Podcast {
 		calendar.set(Calendar.ZONE_OFFSET, offset);
 		return calendar.getTime();
 	}
+	
+	public String getXMLData() {
+		return this.xmlData;
+	}
 }
