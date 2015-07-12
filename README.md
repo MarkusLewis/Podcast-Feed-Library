@@ -4,12 +4,12 @@ _Simple library to read podcast feeds_
 ##Usage
 __Read Feed__
 	
-	Podcast podcast = new Podcast(new URL("FEED URL"));
+	Podcast podcast = new PodcastXML(new URL("FEED URL"));
 	System.out.println("Title - " + podcast.getTitle());
-	
+
 __Get Episodes__
 
-	Podcast podcast = new Podcast(new URL("FEED URL"));
+	Podcast podcast = new PodcastXML(new URL("FEED URL"));
 	List<Episode> episodes = podcast.getEpisodes();
 	for(Episode episode : episodes) {
 		System.out.println("Episode Title - " + episode.getTitle());
