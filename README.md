@@ -1,7 +1,7 @@
-#Java Podcast Feed Parser
+# Java Podcast Feed Parser
 _Simple library to read podcast feeds_
 
-##Usage
+## Usage
 __Read Feed__
 	
 	Podcast podcast = new PodcastXML(new URL("FEED URL"));
@@ -15,11 +15,11 @@ __Get Episodes__
 		System.out.println("Episode Title - " + episode.getTitle());
 	}
 
-##Dependencies
+## Dependencies
 [dom4j](http://dom4j.sourceforge.net/) _xml parsing library_
 
-##License
-	Copyright (c) 2012 Icosillion
+## License (MIT)
+	Copyright (c) 2012 - 2015 Icosillion
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
