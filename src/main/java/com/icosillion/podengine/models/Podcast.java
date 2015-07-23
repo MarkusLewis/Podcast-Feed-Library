@@ -35,6 +35,7 @@ public class Podcast {
 	private TextInputInfo textInputInfo;
 	private Set<Integer> skipHours;
 	private Set<String> skipDays;
+    private ITunesChannelInfo iTunesChannelInfo;
 	
 	public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
 		this.feedURL = feed;
@@ -564,6 +565,13 @@ public class Podcast {
 		
 		return episodes;
 	}
+
+    public ITunesChannelInfo getITunesInfo() {
+        if(this.iTunesChannelInfo != null)
+            return this.iTunesChannelInfo;
+
+        return this.iTunesChannelInfo = new ITunesChannelInfo(this.channelElement);
+    }
 	
 	//Helper Functions
 	protected int getMonthFromCode(String code) {
