@@ -36,7 +36,7 @@ public class CloudInfo {
 
         try {
             this.port = Integer.valueOf(portAttribute.getValue());
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             //TODO Should this return an exception?
             return null;
         }

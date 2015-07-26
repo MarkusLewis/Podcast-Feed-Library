@@ -45,7 +45,7 @@ public class DateUtils {
         //Parse Day of Month
         try {
             calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(parts[1]));
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new DateFormatException("Error parsing day of month.");
         }
 
@@ -64,7 +64,7 @@ public class DateUtils {
                     year = 1900 + year;
                 calendar.set(Calendar.YEAR, year);
             }
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new DateFormatException("Error parsing year.");
         }
 
@@ -74,7 +74,7 @@ public class DateUtils {
             calendar.set(Calendar.HOUR, Integer.valueOf(time[0]));
             calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
             calendar.set(Calendar.SECOND, Integer.valueOf(time[2]));
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new DateFormatException("Error parsing time.");
         }
 

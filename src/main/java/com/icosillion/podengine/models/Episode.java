@@ -9,234 +9,237 @@ import org.dom4j.QName;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Episode {
 
-	public static class Enclosure {
+    public static class Enclosure {
 
-		private URL url;
-		private Long length;
-		private String mimeType;
+        private URL url;
+        private Long length;
+        private String mimeType;
 
-		private final Element enclosureElement;
+        private final Element enclosureElement;
 
-		public Enclosure(Element enclosureElement) {
-			this.enclosureElement = enclosureElement;
-		}
+        public Enclosure(Element enclosureElement) {
+            this.enclosureElement = enclosureElement;
+        }
 
-		public URL getURL() throws MalformedFeedException, MalformedURLException {
-			if(this.url != null)
-				return this.url;
+        public URL getURL() throws MalformedFeedException, MalformedURLException {
+            if(this.url != null)
+                return this.url;
 
-			Attribute urlAttribute = this.enclosureElement.attribute("url");
-			if(urlAttribute == null)
-				throw new MalformedFeedException("Missing required URL attribute for element Enclosure.");
+            Attribute urlAttribute = this.enclosureElement.attribute("url");
+            if(urlAttribute == null)
+                throw new MalformedFeedException("Missing required URL attribute for element Enclosure.");
 
-			return this.url = new URL(urlAttribute.getValue());
-		}
+            return this.url = new URL(urlAttribute.getValue());
+        }
 
-		public Long getLength() throws MalformedFeedException {
-			if(this.length != null)
-				return this.length;
+        public Long getLength() throws MalformedFeedException {
+            if(this.length != null)
+                return this.length;
 
-			Attribute lengthAttribute = this.enclosureElement.attribute("length");
-			if(lengthAttribute == null)
-				throw new MalformedFeedException("Missing required Length attribute for element Enclosure.");
+            Attribute lengthAttribute = this.enclosureElement.attribute("length");
+            if(lengthAttribute == null)
+                throw new MalformedFeedException("Missing required Length attribute for element Enclosure.");
 
-			try {
-				return this.length = Long.parseLong(lengthAttribute.getValue());
-			} catch(NumberFormatException e) {
-				throw new MalformedFeedException("Invalid length specified for element Enclosure.");
-			}
-		}
+            try {
+                return this.length = Long.parseLong(lengthAttribute.getValue());
+            } catch (NumberFormatException e) {
+                throw new MalformedFeedException("Invalid length specified for element Enclosure.");
+            }
+        }
 
-		public String getType() throws MalformedFeedException {
-			if(this.mimeType != null)
-				return this.mimeType;
+        public String getType() throws MalformedFeedException {
+            if(this.mimeType != null)
+                return this.mimeType;
 
-			Attribute typeAttribute = this.enclosureElement.attribute("type");
-			if(typeAttribute == null)
-				throw new MalformedFeedException("Missing required Type attribute for element Enclosure.");
+            Attribute typeAttribute = this.enclosureElement.attribute("type");
+            if(typeAttribute == null)
+                throw new MalformedFeedException("Missing required Type attribute for element Enclosure.");
 
-			return this.mimeType = typeAttribute.getValue();
-		}
-	}
-	
-	private String title;
-	private URL link;
-	private String description;
-	private String author;
-	private Set<String> categories;
-	private URL comments;
-	private Enclosure enclosure;
-	private String guid;
-	private Date pubDate;
-	private String sourceName;
-	private URL sourceLink;
-	private ITunesItemInfo iTunesItemInfo;
-	private String contentEncoded;
+            return this.mimeType = typeAttribute.getValue();
+        }
+    }
 
-	private final Element itemElement;
+    private String title;
+    private URL link;
+    private String description;
+    private String author;
+    private Set<String> categories;
+    private URL comments;
+    private Enclosure enclosure;
+    private String guid;
+    private Date pubDate;
+    private String sourceName;
+    private URL sourceLink;
+    private ITunesItemInfo iTunesItemInfo;
+    private String contentEncoded;
 
-	public Episode(Element itemElement) {
-		this.itemElement = itemElement;
-	}
+    private final Element itemElement;
 
-	//Required Tags
-	public String getTitle() throws MalformedFeedException {
-		if(this.title != null)
-			return this.title;
+    public Episode(Element itemElement) {
+        this.itemElement = itemElement;
+    }
 
-		Element titleElement = this.itemElement.element("title");
-		if(titleElement == null)
-			throw new MalformedFeedException("Item is missing required element title.");
+    //Required Tags
+    public String getTitle() throws MalformedFeedException {
+        if(this.title != null)
+            return this.title;
 
-		return this.title = titleElement.getText();
-	}
+        Element titleElement = this.itemElement.element("title");
+        if(titleElement == null)
+            throw new MalformedFeedException("Item is missing required element title.");
 
-	public String getDescription() throws MalformedFeedException {
-		if(this.description != null)
-			return this.description;
+        return this.title = titleElement.getText();
+    }
 
-		Element descriptionElement = this.itemElement.element("description");
-		if(descriptionElement == null)
-			throw new MalformedFeedException("Item is missing required element description.");
+    public String getDescription() throws MalformedFeedException {
+        if(this.description != null)
+            return this.description;
 
-		return this.description = descriptionElement.getText();
-	}
+        Element descriptionElement = this.itemElement.element("description");
+        if(descriptionElement == null)
+            throw new MalformedFeedException("Item is missing required element description.");
 
-	//Optional Tags
-	public URL getLink() throws MalformedURLException {
-		if(this.link != null)
-			return this.link;
+        return this.description = descriptionElement.getText();
+    }
 
-		Element linkElement = this.itemElement.element("link");
-		if(linkElement == null)
-			return null;
+    //Optional Tags
+    public URL getLink() throws MalformedURLException {
+        if(this.link != null)
+            return this.link;
 
-		if("atom".equalsIgnoreCase(linkElement.getNamespacePrefix()))
-			return this.link = new URL(linkElement.attributeValue("href"));
+        Element linkElement = this.itemElement.element("link");
+        if(linkElement == null)
+            return null;
 
-		return this.link = new URL(linkElement.getText());
-	}
+        if("atom".equalsIgnoreCase(linkElement.getNamespacePrefix()))
+            return this.link = new URL(linkElement.attributeValue("href"));
 
-	public Enclosure getEnclosure() {
-		if(this.enclosure != null)
-			return this.enclosure;
+        return this.link = new URL(linkElement.getText());
+    }
 
-		Element enclosureElement = this.itemElement.element("enclosure");
-		if(enclosureElement == null)
-			return null;
+    public Enclosure getEnclosure() {
+        if(this.enclosure != null)
+            return this.enclosure;
 
-		return this.enclosure = new Enclosure(enclosureElement);
-	}
+        Element enclosureElement = this.itemElement.element("enclosure");
+        if(enclosureElement == null)
+            return null;
 
-	public String getAuthor() {
-		if(this.author != null)
-			return this.author;
+        return this.enclosure = new Enclosure(enclosureElement);
+    }
 
-		Element authorElement = this.itemElement.element("author");
-		if(authorElement == null)
-			return null;
+    public String getAuthor() {
+        if(this.author != null)
+            return this.author;
 
-		return this.author = authorElement.getText();
-	}
+        Element authorElement = this.itemElement.element("author");
+        if(authorElement == null)
+            return null;
 
-	public Set<String> getCategories() {
-		if(this.categories != null)
-			return this.categories;
+        return this.author = authorElement.getText();
+    }
 
-		Element categoriesElement = this.itemElement.element("categories");
-		if(categoriesElement == null || categoriesElement.elements().size() == 0)
-			return null;
+    public Set<String> getCategories() {
+        if(this.categories != null)
+            return this.categories;
 
-		Set<String> categories = new HashSet<>();
-		for(Object elementObject : categoriesElement.elements("category")) {
-			if(!(elementObject instanceof Element))
-				continue;
+        Element categoriesElement = this.itemElement.element("categories");
+        if(categoriesElement == null || categoriesElement.elements().size() == 0)
+            return null;
 
-			Element categoryElement = (Element) elementObject;
-			categories.add(categoryElement.getText());
-		}
+        Set<String> categories = new HashSet<>();
+        for(Object elementObject : categoriesElement.elements("category")) {
+            if(!(elementObject instanceof Element))
+                continue;
 
-		return this.categories = Collections.unmodifiableSet(categories);
-	}
+            Element categoryElement = (Element) elementObject;
+            categories.add(categoryElement.getText());
+        }
 
-	public URL getComments() throws MalformedURLException {
-		if(this.comments != null)
-			return this.comments;
+        return this.categories = Collections.unmodifiableSet(categories);
+    }
 
-		Element commentsElement = this.itemElement.element("comments");
-		if(commentsElement == null)
-			return null;
+    public URL getComments() throws MalformedURLException {
+        if(this.comments != null)
+            return this.comments;
 
-		return this.comments = new URL(commentsElement.getTextTrim());
-	}
+        Element commentsElement = this.itemElement.element("comments");
+        if(commentsElement == null)
+            return null;
 
-	public String getGUID() {
-		if(this.guid != null)
-			return this.guid;
+        return this.comments = new URL(commentsElement.getTextTrim());
+    }
 
-		Element guidElement = this.itemElement.element("guid");
-		if(guidElement == null)
-			return null;
+    public String getGUID() {
+        if(this.guid != null)
+            return this.guid;
 
-		return this.guid = guidElement.getTextTrim();
-	}
+        Element guidElement = this.itemElement.element("guid");
+        if(guidElement == null)
+            return null;
 
-	public Date getPubDate() throws DateFormatException {
-		if(this.pubDate != null)
-			return this.pubDate;
+        return this.guid = guidElement.getTextTrim();
+    }
 
-		Element pubDateElement = this.itemElement.element("pubDate");
-		if(pubDateElement == null)
-			return null;
+    public Date getPubDate() throws DateFormatException {
+        if(this.pubDate != null)
+            return this.pubDate;
 
-		return this.pubDate = DateUtils.stringToDate(pubDateElement.getTextTrim());
-	}
+        Element pubDateElement = this.itemElement.element("pubDate");
+        if(pubDateElement == null)
+            return null;
 
-	public String getSourceName() {
-		if(this.sourceName != null)
-			return this.sourceName;
+        return this.pubDate = DateUtils.stringToDate(pubDateElement.getTextTrim());
+    }
 
-		Element sourceElement = this.itemElement.element("source");
-		if(sourceElement == null)
-			return null;
+    public String getSourceName() {
+        if(this.sourceName != null)
+            return this.sourceName;
 
-		return this.sourceName = sourceElement.getText();
-	}
+        Element sourceElement = this.itemElement.element("source");
+        if(sourceElement == null)
+            return null;
 
-	public URL getSourceURL() throws MalformedFeedException, MalformedURLException {
-		if(this.sourceLink != null)
-			return this.sourceLink;
+        return this.sourceName = sourceElement.getText();
+    }
 
-		Element sourceElement = this.itemElement.element("source");
-		if(sourceElement == null)
-			return null;
+    public URL getSourceURL() throws MalformedFeedException, MalformedURLException {
+        if(this.sourceLink != null)
+            return this.sourceLink;
 
-		Attribute urlAttribute = this.itemElement.attribute("url");
-		if(urlAttribute == null)
-			throw new MalformedFeedException("Missing required attribute URL for element Source.");
+        Element sourceElement = this.itemElement.element("source");
+        if(sourceElement == null)
+            return null;
 
-		return this.sourceLink = new URL(urlAttribute.getText());
-	}
+        Attribute urlAttribute = this.itemElement.attribute("url");
+        if(urlAttribute == null)
+            throw new MalformedFeedException("Missing required attribute URL for element Source.");
 
-	public ITunesItemInfo getITunesInfo() {
-		if(this.iTunesItemInfo != null)
-			return this.iTunesItemInfo;
+        return this.sourceLink = new URL(urlAttribute.getText());
+    }
 
-		return this.iTunesItemInfo = new ITunesItemInfo(this.itemElement);
-	}
+    public ITunesItemInfo getITunesInfo() {
+        if(this.iTunesItemInfo != null)
+            return this.iTunesItemInfo;
 
-	public String getContentEncoded() {
-		if(this.contentEncoded != null)
-			return this.contentEncoded;
+        return this.iTunesItemInfo = new ITunesItemInfo(this.itemElement);
+    }
 
-		Element contentEncodedElement = this.itemElement.element(QName.get("encoded", "content"));
-		if(contentEncodedElement == null)
-			return null;
+    public String getContentEncoded() {
+        if(this.contentEncoded != null)
+            return this.contentEncoded;
 
-		return this.contentEncoded = contentEncodedElement.getText();
-	}
+        Element contentEncodedElement = this.itemElement.element(QName.get("encoded", "content"));
+        if(contentEncodedElement == null)
+            return null;
+
+        return this.contentEncoded = contentEncodedElement.getText();
+    }
 }

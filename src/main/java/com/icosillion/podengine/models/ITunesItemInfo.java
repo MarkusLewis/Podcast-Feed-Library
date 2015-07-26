@@ -48,7 +48,7 @@ public class ITunesItemInfo extends ITunesInfo {
 
         try {
             return this.order = Integer.parseInt(orderElement.getTextTrim());
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return null;
         }
     }
