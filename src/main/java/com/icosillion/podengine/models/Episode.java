@@ -4,6 +4,7 @@ import com.icosillion.podengine.exceptions.MalformedFeedException;
 import com.icosillion.podengine.utils.DateUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
+import org.dom4j.QName;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,6 +74,7 @@ public class Episode {
 	private String sourceName;
 	private URL sourceLink;
 	private ITunesItemInfo iTunesItemInfo;
+	private String contentEncoded;
 
 	private Element itemElement;
 
@@ -224,5 +226,16 @@ public class Episode {
 			return this.iTunesItemInfo;
 
 		return this.iTunesItemInfo = new ITunesItemInfo(this.itemElement);
+	}
+
+	public String getContentEncoded() {
+		if(this.contentEncoded != null)
+			return this.contentEncoded;
+
+		Element contentEncodedElement = this.itemElement.element(QName.get("encoded", "content"));
+		if(contentEncodedElement == null)
+			return null;
+
+		return this.contentEncoded = contentEncodedElement.getText();
 	}
 }
