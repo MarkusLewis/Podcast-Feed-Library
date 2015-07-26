@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.*;
 
 import com.icosillion.podengine.exceptions.InvalidFeedException;
+import com.icosillion.podengine.utils.DateUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -21,7 +22,6 @@ public class Podcast {
 	protected String xmlData;
 	protected Document document;
 	protected URL feedURL;
-	//TODO Add support for HTTP basic-auth
 
 	private Element rootElement, channelElement;
 
@@ -36,6 +36,7 @@ public class Podcast {
 	private Set<Integer> skipHours;
 	private Set<String> skipDays;
     private ITunesChannelInfo iTunesChannelInfo;
+	private List<Episode> episodes;
 	
 	public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
 		this.feedURL = feed;
@@ -177,7 +178,7 @@ public class Podcast {
 		if(pubDateString == null)
 			return null;
 		
-		return this.pubDate = stringToDate(pubDateString.trim());
+		return this.pubDate = DateUtils.stringToDate(pubDateString.trim());
 	}
 
 	public String getPubDateString() {
@@ -199,7 +200,7 @@ public class Podcast {
 		if(lastBuildDateString == null)
 			return null;
 
-		return this.lastBuildDate = stringToDate(lastBuildDateString);
+		return this.lastBuildDate = DateUtils.stringToDate(lastBuildDateString);
 	}
 
 	public String getLastBuildDateString() {
@@ -474,96 +475,23 @@ public class Podcast {
 		return output;
 	}
 	
-	//Some iTunes Specific Stuff
-	//TODO Update this with caching
-	public boolean isExplicit() {
-		Element explicitElement = this.channelElement.element("explicit");
-		if(explicitElement != null && "itunes".equalsIgnoreCase(explicitElement.getNamespacePrefix()))
-			return "yes".equalsIgnoreCase(explicitElement.getTextTrim());
-		
-		return false;
-	}
-	
 	//Episodes
-	//TODO Update this with caching
-	//TODO Rewrite that with new element syntax used within rest of code (It's far more efficient)
-	public List<Episode> getEpisodes() throws MalformedURLException, MalformedFeedException {
+	public List<Episode> getEpisodes() {
+		if(this.episodes != null)
+			return this.episodes;
+
 		List<Episode> episodes = new ArrayList<>();
-		for(Element item : (List<Element>) this.channelElement.elements("item")) {
-			Episode episode = new Episode();
+		for(Object itemObject : this.rootElement.elements("item")) {
+			if(!(itemObject instanceof Element))
+				continue;
 
-			//Required Tags
-
-			//Title
-			Element titleElement = item.element("title");
-			if(titleElement == null)
-				throw new MalformedFeedException("Item is missing required element title.");
-			episode.setTitle(titleElement.getText());
-
-			//Description
-			Element descriptionElement = item.element("description");
-			if(descriptionElement == null)
-				throw new MalformedFeedException("Item is missing required element descripton.");
-
-			//Optional Tags
-			//Link
-			if(item.element("link") != null) {
-				URL link = null;
-				if("atom".equalsIgnoreCase(item.element("link").getNamespacePrefix()))
-					link = new URL(item.element("link").attributeValue("href"));
-				link =  new URL(item.elementText("link"));
-				episode.setLink(link);
-			}
-			
-			//Encoded Content
-			if(item.element("encoded") != null && "content".equalsIgnoreCase(item.element("encoded").getNamespacePrefix()))
-				episode.setEncodedContent(item.elementText("encoded"));
-			
-			//Author
-			if(item.element("author") != null)
-				episode.setAuthor(item.elementText("author"));
-			
-			//Categories
-			List<String> categories = new ArrayList<>();
-			for(Element category : (List<Element>) item.elements("category"))
-				categories.add(category.getText());
-			
-			if(categories.size() > 0) {
-				String[] categoryArray = new String[categories.size()];
-				categories.toArray(categoryArray);
-				episode.setCategories(categoryArray);
-			} else
-				episode.setCategories(new String[0]);
-			
-			Element commentsElement = item.element("comments");
-			if(commentsElement != null)
-				episode.setComments(new URL(commentsElement.getTextTrim()));
-			
-			//Enclosure
-			if(item.element("enclosure") != null) {
-				episode.setMediaLocation(new URL(item.element("enclosure").attributeValue("url")));
-				episode.setMediaLength(Integer.valueOf(item.element("enclosure").attributeValue("length")));
-				episode.setMediaType(item.element("enclosure").attributeValue("type"));
-			}
-			
-			//GUID
-			if(item.element("guid") != null)
-				episode.setGuid(item.elementText("guid"));
-			
-			//PubDate
-			if(item.element("pubDate") != null)
-				episode.setPubDate(this.stringToDate(item.elementText("pubDate")));
-			
-			//Source
-			if(item.element("source") != null) {
-				episode.setSourceLink(new URL(item.element("source").attributeValue("url")));
-				episode.setSourceName(item.element("source").attributeValue("name"));
-			}
-			
-			episodes.add(episode);
+			episodes.add(new Episode((Element) itemObject));
 		}
-		
-		return episodes;
+
+		if(episodes.size() == 0)
+			return null;
+
+		return this.episodes = Collections.unmodifiableList(episodes);
 	}
 
     public ITunesChannelInfo getITunesInfo() {
@@ -574,78 +502,6 @@ public class Podcast {
     }
 	
 	//Helper Functions
-	protected int getMonthFromCode(String code) {
-		if("Jan".equalsIgnoreCase(code))
-			return 0;
-		else if("Feb".equalsIgnoreCase(code))
-			return 1;
-		else if("Mar".equalsIgnoreCase(code))
-			return 2;
-		else if("Apr".equalsIgnoreCase(code))
-			return 3;
-		else if("May".equalsIgnoreCase(code))
-			return 4;
-		else if("Jun".equalsIgnoreCase(code))
-			return 5;
-		else if("Jul".equalsIgnoreCase(code))
-			return 6;
-		else if("Aug".equalsIgnoreCase(code))
-			return 7;
-		else if("Sep".equalsIgnoreCase(code))
-			return 8;
-		else if("Oct".equalsIgnoreCase(code))
-			return 9;
-		else if("Nov".equalsIgnoreCase(code))
-			return 10;
-		else if("Dec".equalsIgnoreCase(code))
-			return 11;
-		
-		return -1;
-	}
-	
-	protected Date stringToDate(String dt) {
-		Calendar calendar = Calendar.getInstance();
-		String[] parts = dt.split(" ");
-		calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(parts[1]));
-		calendar.set(Calendar.MONTH, this.getMonthFromCode(parts[2]));
-		if(parts[3].length() == 4)
-			calendar.set(Calendar.YEAR, Integer.valueOf(parts[3]));
-		else {
-			int year = Integer.valueOf(parts[3]);
-			if(year < 80)
-				year = 2000 + year;
-			else
-				year = 1900 + year;
-			calendar.set(Calendar.YEAR, year);
-		}
-		String[] time = parts[4].split(":");
-		calendar.set(Calendar.HOUR, Integer.valueOf(time[0]));
-		calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
-		calendar.set(Calendar.SECOND, Integer.valueOf(time[2]));
-		int offset = 0;
-		if("EST".equals(parts[5]))
-			offset = -5 * 3600000;
-		else if("EDT".equals(parts[5]))
-			offset = -4 * 3600000;
-		else if("CST".equals(parts[5]))
-			offset = -6 * 3600000;
-		else if("CDT".equals(parts[5]))
-			offset = -5 * 3600000;
-		else if("MST".equals(parts[5]))
-			offset = -7 * 3600000;
-		else if("MDT".equals(parts[5]))
-			offset = -6 * 3600000;
-		else if("PST".equals(parts[5]))
-			offset = -8 * 3600000;
-		else if("PDT".equals(parts[5]))
-			offset = -7 * 3600000;
-		else if(parts[5].startsWith("+")) {
-			offset = Integer.valueOf(parts[5].substring(1, 3)) * 3600000;
-			offset += Integer.valueOf(parts[5].substring(3, 5)) * 60000;
-		}
-		calendar.set(Calendar.ZONE_OFFSET, offset);
-		return calendar.getTime();
-	}
 
 	public String getXMLData() {
 		return this.xmlData;
