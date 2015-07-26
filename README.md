@@ -1,7 +1,7 @@
 # Java Podcast Feed Parser
 _Simple library to read podcast feeds_
 
-__Version__ 0.0.2-SNAPSHOT
+__Version__ 2.0.0-SNAPSHOT
 
 ## Usage
 __Read Feed__
