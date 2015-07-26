@@ -19,6 +19,7 @@ __Get Episodes__
 
 ## Dependencies
 [dom4j](http://dom4j.sourceforge.net/) _XML Parsing Library_
+
 [Apache Commons IO](https://commons.apache.org/proper/commons-io/) _IO Utilities_
 
 ## License (MIT)

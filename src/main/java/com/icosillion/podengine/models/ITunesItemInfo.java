@@ -5,22 +5,6 @@ import org.dom4j.QName;
 
 public class ITunesItemInfo extends ITunesInfo {
 
-    /*
-    author: String CI
-    block: Bool CI
-    category: String / Array C
-    image: URL CI
-    duration: String (HH:MM:SS various) I
-    explicit: Bool("yes" / "clean") CI
-    isClosedCaptioned: Bool I
-    order: Int I
-    complete: Bool C
-    new-feed-url: URL C
-    owner: Embedded Record C
-    subtitle: String CI
-    summary: String CI
-    */
-
     private String duration;
     private Boolean isClosedCaptioned;
     private Integer order;
@@ -30,7 +14,6 @@ public class ITunesItemInfo extends ITunesInfo {
     }
 
     public String getDuration() {
-        //TODO Further parse this?
         if(this.duration != null)
             return this.duration;
 

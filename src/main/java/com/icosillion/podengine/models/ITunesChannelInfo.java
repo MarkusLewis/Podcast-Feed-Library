@@ -8,22 +8,6 @@ import java.net.URL;
 
 public class ITunesChannelInfo extends ITunesInfo {
 
-    /*
-    author: String CI
-    block: Bool CI
-    category: String / Array C
-    image: URL CI
-    duration: String (HH:MM:SS various) I
-    explicit: Bool("yes" / "clean") CI
-    isClosedCaptioned: Bool I
-    order: Int I
-    complete: Bool C
-    new-feed-url: URL C
-    owner: Embedded Record C
-    subtitle: String CI
-    summary: String CI
-    */
-
     //TODO Category
     private Boolean complete;
     private URL newFeedURL;

@@ -1,5 +1,6 @@
 package com.icosillion.podengine.models;
 
+import com.icosillion.podengine.exceptions.DateFormatException;
 import com.icosillion.podengine.exceptions.MalformedFeedException;
 import com.icosillion.podengine.utils.DateUtils;
 import org.dom4j.Attribute;
@@ -184,7 +185,7 @@ public class Episode {
 		return this.guid = guidElement.getTextTrim();
 	}
 
-	public Date getPubDate() {
+	public Date getPubDate() throws DateFormatException {
 		if(this.pubDate != null)
 			return this.pubDate;
 

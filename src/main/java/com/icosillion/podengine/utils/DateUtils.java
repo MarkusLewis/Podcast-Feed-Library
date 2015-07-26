@@ -1,11 +1,13 @@
 package com.icosillion.podengine.utils;
 
+import com.icosillion.podengine.exceptions.DateFormatException;
+
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
 
-    private static int getMonthFromCode(String code) {
+    private static int getMonthFromCode(String code) throws DateFormatException {
         if("Jan".equalsIgnoreCase(code))
             return 0;
         else if("Feb".equalsIgnoreCase(code))
@@ -31,28 +33,47 @@ public class DateUtils {
         else if("Dec".equalsIgnoreCase(code))
             return 11;
 
-        return -1;
+        throw new DateFormatException("Invalid month: " + code);
     }
 
-    public static Date stringToDate(String dt) {
+    public static Date stringToDate(String dt) throws DateFormatException {
         Calendar calendar = Calendar.getInstance();
         String[] parts = dt.split(" ");
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(parts[1]));
-        calendar.set(Calendar.MONTH, getMonthFromCode(parts[2]));
-        if(parts[3].length() == 4)
-            calendar.set(Calendar.YEAR, Integer.valueOf(parts[3]));
-        else {
-            int year = Integer.valueOf(parts[3]);
-            if(year < 80)
-                year = 2000 + year;
-            else
-                year = 1900 + year;
-            calendar.set(Calendar.YEAR, year);
+        if(parts.length != 5)
+            throw new DateFormatException("Invalid date format.");
+
+        //Parse Day of Month
+        try {
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(parts[1]));
+        } catch(NumberFormatException e) {
+            throw new DateFormatException("Error parsing day of month.");
         }
+
+        try {
+            calendar.set(Calendar.MONTH, getMonthFromCode(parts[2]));
+            if(parts[3].length() == 4)
+                calendar.set(Calendar.YEAR, Integer.valueOf(parts[3]));
+            else {
+                int year = Integer.valueOf(parts[3]);
+                if(year < 80)
+                    year = 2000 + year;
+                else
+                    year = 1900 + year;
+                calendar.set(Calendar.YEAR, year);
+            }
+        } catch(NumberFormatException e) {
+            throw new DateFormatException("Error parsing year.");
+        }
+
         String[] time = parts[4].split(":");
-        calendar.set(Calendar.HOUR, Integer.valueOf(time[0]));
-        calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
-        calendar.set(Calendar.SECOND, Integer.valueOf(time[2]));
+        try {
+            calendar.set(Calendar.HOUR, Integer.valueOf(time[0]));
+            calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
+            calendar.set(Calendar.SECOND, Integer.valueOf(time[2]));
+        } catch(NumberFormatException e) {
+            throw new DateFormatException("Error parsing time.");
+        }
+
         int offset = 0;
         if("EST".equals(parts[5]))
             offset = -5 * 3600000;

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
+import com.icosillion.podengine.exceptions.DateFormatException;
 import com.icosillion.podengine.exceptions.InvalidFeedException;
 import com.icosillion.podengine.utils.DateUtils;
 import org.apache.commons.io.IOUtils;
@@ -162,7 +163,7 @@ public class Podcast {
 		return this.webMaster = webMasterElement.getText();
 	}
 
-	public Date getPubDate() {
+	public Date getPubDate() throws DateFormatException {
 		if(this.pubDate != null)
 			return this.pubDate;
 
@@ -184,7 +185,7 @@ public class Podcast {
 		return this.pubDateString = pubDateElement.getText();
 	}
 
-	public Date getLastBuildDate() {
+	public Date getLastBuildDate() throws DateFormatException {
 		if(this.lastBuildDate != null)
 			return this.lastBuildDate;
 
