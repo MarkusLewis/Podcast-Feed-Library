@@ -1,15 +1,14 @@
 package com.icosillion.podengine.models;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 
 import com.icosillion.podengine.exceptions.InvalidFeedException;
 import com.icosillion.podengine.utils.DateUtils;
+import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -37,25 +36,18 @@ public class Podcast {
 	private Set<String> skipDays;
     private ITunesChannelInfo iTunesChannelInfo;
 	private List<Episode> episodes;
-	
+
 	public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
-		this.feedURL = feed;
-		URLConnection connection;
+		InputStream is = null;
 		try {
-			connection = feed.openConnection();
-			connection.connect();
-			this.xmlData = "";
-			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String line;
-			while((line = reader.readLine()) != null) {
-				this.xmlData += line + "\n";
-			}
-			reader.close();
-			this.document = DocumentHelper.parseText(this.xmlData);
+			is = feed.openStream();
+			this.document = DocumentHelper.parseText(IOUtils.toString(is));
 		} catch (IOException e) {
 			throw new InvalidFeedException("Error reading feed.", e);
 		} catch (DocumentException e) {
-			throw new MalformedFeedException("Error parsing feed.", e);
+			throw new InvalidFeedException("Error parsing feed XML.", e);
+		} finally {
+			IOUtils.closeQuietly(is);
 		}
 	}
 	

@@ -1,22 +1,25 @@
 # Java Podcast Feed Parser
 _Simple library to read podcast feeds_
 
+__Version__ 0.0.2-SNAPSHOT
+
 ## Usage
 __Read Feed__
 	
-	Podcast podcast = new PodcastXML(new URL("FEED URL"));
+	Podcast podcast = new Podcast(new URL("FEED URL"));
 	System.out.println("Title - " + podcast.getTitle());
 
 __Get Episodes__
 
-	Podcast podcast = new PodcastXML(new URL("FEED URL"));
+	Podcast podcast = new Podcast(new URL("FEED URL"));
 	List<Episode> episodes = podcast.getEpisodes();
 	for(Episode episode : episodes) {
 		System.out.println("Episode Title - " + episode.getTitle());
 	}
 
 ## Dependencies
-[dom4j](http://dom4j.sourceforge.net/) _xml parsing library_
+[dom4j](http://dom4j.sourceforge.net/) _XML Parsing Library_
+[Apache Commons IO](https://commons.apache.org/proper/commons-io/) _IO Utilities_
 
 ## License (MIT)
 	Copyright (c) 2012 - 2015 Icosillion
