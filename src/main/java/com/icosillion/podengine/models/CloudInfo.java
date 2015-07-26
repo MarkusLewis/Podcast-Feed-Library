@@ -5,7 +5,7 @@ import org.dom4j.Element;
 
 public class CloudInfo {
 
-    private Element cloudElement;
+    private final Element cloudElement;
 
     //Caching
     private String domain, path, registerProcedure, protocol;

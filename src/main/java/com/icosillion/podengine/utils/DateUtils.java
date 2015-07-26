@@ -49,8 +49,11 @@ public class DateUtils {
             throw new DateFormatException("Error parsing day of month.");
         }
 
+        //Parse Month
+        calendar.set(Calendar.MONTH, getMonthFromCode(parts[2]));
+
+        //Parse Year
         try {
-            calendar.set(Calendar.MONTH, getMonthFromCode(parts[2]));
             if(parts[3].length() == 4)
                 calendar.set(Calendar.YEAR, Integer.valueOf(parts[3]));
             else {
@@ -65,6 +68,7 @@ public class DateUtils {
             throw new DateFormatException("Error parsing year.");
         }
 
+        //Parse Time
         String[] time = parts[4].split(":");
         try {
             calendar.set(Calendar.HOUR, Integer.valueOf(time[0]));
@@ -74,6 +78,7 @@ public class DateUtils {
             throw new DateFormatException("Error parsing time.");
         }
 
+        //Parse Timezone
         int offset = 0;
         if("EST".equals(parts[5]))
             offset = -5 * 3600000;
@@ -96,6 +101,7 @@ public class DateUtils {
             offset += Integer.valueOf(parts[5].substring(3, 5)) * 60000;
         }
         calendar.set(Calendar.ZONE_OFFSET, offset);
+
         return calendar.getTime();
     }
 }

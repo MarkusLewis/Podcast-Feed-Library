@@ -19,7 +19,7 @@ public class Episode {
 		private Long length;
 		private String mimeType;
 
-		private Element enclosureElement;
+		private final Element enclosureElement;
 
 		public Enclosure(Element enclosureElement) {
 			this.enclosureElement = enclosureElement;
@@ -77,7 +77,7 @@ public class Episode {
 	private ITunesItemInfo iTunesItemInfo;
 	private String contentEncoded;
 
-	private Element itemElement;
+	private final Element itemElement;
 
 	public Episode(Element itemElement) {
 		this.itemElement = itemElement;
@@ -157,7 +157,7 @@ public class Episode {
 				continue;
 
 			Element categoryElement = (Element) elementObject;
-			categories.add(categoriesElement.getText());
+			categories.add(categoryElement.getText());
 		}
 
 		return this.categories = Collections.unmodifiableSet(categories);
@@ -196,7 +196,7 @@ public class Episode {
 		return this.pubDate = DateUtils.stringToDate(pubDateElement.getTextTrim());
 	}
 
-	public String getSourceName() throws MalformedFeedException {
+	public String getSourceName() {
 		if(this.sourceName != null)
 			return this.sourceName;
 

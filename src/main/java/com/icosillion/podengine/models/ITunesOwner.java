@@ -5,7 +5,7 @@ import org.dom4j.QName;
 
 public class ITunesOwner {
 
-    private Element ownerElement;
+    private final Element ownerElement;
 
     private String name, email;
 

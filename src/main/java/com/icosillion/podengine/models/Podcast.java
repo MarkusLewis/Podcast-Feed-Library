@@ -19,9 +19,9 @@ import com.icosillion.podengine.exceptions.MalformedFeedException;
 
 public class Podcast {
 	
-	protected String xmlData;
-	protected Document document;
-	protected URL feedURL;
+	private String xmlData;
+	private Document document;
+	private URL feedURL;
 
 	private Element rootElement, channelElement;
 
@@ -38,7 +38,7 @@ public class Podcast {
     private ITunesChannelInfo iTunesChannelInfo;
 	private List<Episode> episodes;
 
-	public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
+	public Podcast(URL feed) throws InvalidFeedException {
 		InputStream is = null;
 		try {
 			is = feed.openStream();
@@ -209,7 +209,7 @@ public class Podcast {
 
 	//TODO Update this with caching
 	public String[] getCategories() {
-		List<String> categories = new ArrayList<String>();
+		List<String> categories = new ArrayList<>();
 		Element rootElement = this.document.getRootElement();
 		Element channel = rootElement.element("channel");
 		boolean hasiTunes = false;
@@ -227,7 +227,7 @@ public class Podcast {
 						else
 							categories.add(child.getText());
 					} else {
-						String finalCategory = "";
+						String finalCategory;
 						if(child.attribute("text") != null)
 							finalCategory = child.attributeValue("text");
 						else
@@ -249,7 +249,7 @@ public class Podcast {
 						else
 							categories.add(child.getText());
 					} else {
-						String finalCategory = "";
+						String finalCategory;
 						if(child.attribute("text") != null)
 							finalCategory = child.attributeValue("text");
 						else
@@ -440,7 +440,7 @@ public class Podcast {
 
 	//TODO Update this with caching and convert to Set<String>
 	public String[] getKeywords() {
-		List<String> keywords = new ArrayList<String>();
+		List<String> keywords = new ArrayList<>();
 		Element rootElement = this.document.getRootElement();
 		Element channel = rootElement.element("channel");
 		boolean hasiTunes = false;
@@ -493,8 +493,6 @@ public class Podcast {
 
         return this.iTunesChannelInfo = new ITunesChannelInfo(this.channelElement);
     }
-	
-	//Helper Functions
 
 	public String getXMLData() {
 		return this.xmlData;

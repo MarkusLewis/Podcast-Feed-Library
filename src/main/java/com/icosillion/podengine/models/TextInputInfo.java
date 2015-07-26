@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class TextInputInfo {
 
-    private Element textInputElement;
+    private final Element textInputElement;
 
     //Caching
     private String title, description, name;

@@ -9,10 +9,10 @@ import java.net.URL;
 public abstract class ITunesInfo {
 
     public enum ExplicitLevel {
-        EXPLICIT, CLEAN, UNKNOWN;
+        EXPLICIT, CLEAN, UNKNOWN
     }
 
-    protected Element parent;
+    final Element parent;
     private String author, subtitle, summary;
     private ExplicitLevel explicit;
     private Boolean block;
