@@ -37,11 +37,18 @@ public class Podcast {
     private ITunesChannelInfo iTunesChannelInfo;
     private List<Episode> episodes;
 
-    public Podcast(URL feed) throws InvalidFeedException {
+    public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
         InputStream is = null;
         try {
             is = feed.openStream();
-            this.document = DocumentHelper.parseText(IOUtils.toString(is));
+            this.feedURL = feed;
+            this.xmlData = IOUtils.toString(is);
+            this.document = DocumentHelper.parseText(xmlData);
+            this.rootElement = this.document.getRootElement();
+            this.channelElement = this.rootElement.element("channel");
+            if(this.channelElement == null) {
+                throw new MalformedFeedException("Missing required channel element.");
+            }
         } catch (IOException e) {
             throw new InvalidFeedException("Error reading feed.", e);
         } catch (DocumentException e) {
