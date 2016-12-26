@@ -14,23 +14,27 @@ public class ITunesOwner {
     }
 
     public String getName() {
-        if(this.name != null)
+        if (this.name != null) {
             return this.name;
+        }
 
         Element nameElement = this.ownerElement.element(QName.get("name", "itunes"));
-        if(nameElement == null)
+        if (nameElement == null) {
             return null;
+        }
 
         return this.name = nameElement.getText();
     }
 
     public String getEmail() {
-        if(this.email != null)
+        if (this.email != null) {
             return this.email;
+        }
 
         Element emailElement = this.ownerElement.element(QName.get("email", "itunes"));
-        if(emailElement == null)
+        if (emailElement == null) {
             return null;
+        }
 
         return this.email = emailElement.getText();
     }

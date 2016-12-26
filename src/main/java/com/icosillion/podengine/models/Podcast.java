@@ -52,7 +52,7 @@ public class Podcast {
             this.document = DocumentHelper.parseText(xmlData);
             this.rootElement = this.document.getRootElement();
             this.channelElement = this.rootElement.element("channel");
-            if(this.channelElement == null) {
+            if (this.channelElement == null) {
                 throw new MalformedFeedException("Missing required channel element.");
             }
         } catch (IOException e) {
@@ -70,8 +70,9 @@ public class Podcast {
             this.document = DocumentHelper.parseText(this.xmlData);
             this.rootElement = this.document.getRootElement();
             this.channelElement = this.rootElement.element("channel");
-            if(this.channelElement == null)
+            if (this.channelElement == null) {
                 throw new MalformedFeedException("Missing required element 'channel'.");
+            }
         } catch (DocumentException e) {
             throw new MalformedFeedException("Error parsing feed.", e);
         }
@@ -84,45 +85,50 @@ public class Podcast {
             this.document = DocumentHelper.parseText(this.xmlData);
             this.rootElement = this.document.getRootElement();
             this.channelElement = this.rootElement.element("channel");
-            if(this.channelElement == null)
+            if (this.channelElement == null) {
                 throw new MalformedFeedException("Missing required element 'channel'.");
+            }
         } catch (DocumentException e) {
             throw new MalformedFeedException("Error parsing document.", e);
         }
     }
 
     public String getTitle() throws MalformedFeedException {
-        if(this.title != null)
+        if (this.title != null)
             return this.title;
 
         Element titleElement = this.channelElement.element("title");
-        if(titleElement == null)
+        if (titleElement == null) {
             throw new MalformedFeedException("Missing required title element.");
+        }
 
         return this.title = titleElement.getText();
     }
 
     public String getDescription() throws MalformedFeedException {
-        if(this.description != null)
+        if (this.description != null)
             return this.description;
 
         Element descriptionElement = this.channelElement.element("description");
-        if(descriptionElement == null)
+        if (descriptionElement == null) {
             throw new MalformedFeedException("Missing required description element.");
+        }
 
         return this.description = descriptionElement.getText();
     }
 
     public URL getLink() throws MalformedURLException, MalformedFeedException {
-        if(this.link != null)
+        if (this.link != null) {
             return this.link;
+        }
 
         Element linkElement = this.channelElement.element("link");
-        if(linkElement == null)
+        if (linkElement == null)
             throw new MalformedFeedException("Missing required link element.");
 
-        if("atom".equalsIgnoreCase(linkElement.getNamespacePrefix()))
+        if ("atom".equalsIgnoreCase(linkElement.getNamespacePrefix())) {
             return new URL(linkElement.attributeValue("href"));
+        }
 
         //TODO Handle URL Exceptions?
 
@@ -132,89 +138,103 @@ public class Podcast {
     //Optional Params (Can return null)
 
     public String getLanguage() {
-        if(this.language != null)
+        if (this.language != null)
             return this.language;
 
         Element languageElement = this.channelElement.element("language");
-        if(languageElement == null)
+        if (languageElement == null) {
             return null;
+        }
 
         return this.language = languageElement.getText();
     }
 
     public String getCopyright() {
-        if(this.copyright != null)
+        if (this.copyright != null) {
             return this.copyright;
+        }
 
         Element copyrightElement = this.channelElement.element("copyright");
-        if(copyrightElement == null)
+        if (copyrightElement == null) {
             return null;
+        }
 
         return this.copyright = copyrightElement.getText();
     }
 
     public String getManagingEditor() {
-        if(this.managingEditor != null)
+        if (this.managingEditor != null) {
             return this.managingEditor;
+        }
 
         Element managingEditorElement = this.channelElement.element("managingEditor");
-        if(managingEditorElement == null)
+        if (managingEditorElement == null)
             return null;
 
         return this.managingEditor = managingEditorElement.getText();
     }
 
     public String getWebMaster() {
-        if(this.webMaster != null)
+        if (this.webMaster != null) {
             return this.webMaster;
+        }
 
         Element webMasterElement = this.channelElement.element("webMaster");
-        if(webMasterElement == null)
+        if (webMasterElement == null) {
             return null;
+        }
 
         return this.webMaster = webMasterElement.getText();
     }
 
     public Date getPubDate() throws DateFormatException {
-        if(this.pubDate != null)
+        if (this.pubDate != null) {
             return this.pubDate;
+        }
 
         String pubDateString = getPubDateString();
-        if(pubDateString == null)
+        if (pubDateString == null) {
             return null;
+        }
 
         return this.pubDate = DateUtils.stringToDate(pubDateString.trim());
     }
 
     public String getPubDateString() {
-        if(this.pubDateString != null)
+        if (this.pubDateString != null) {
             return this.pubDateString;
+        }
 
         Element pubDateElement = this.channelElement.element("pubDate");
-        if(pubDateElement == null)
+        if (pubDateElement == null) {
             return null;
+        }
 
         return this.pubDateString = pubDateElement.getText();
     }
 
     public Date getLastBuildDate() throws DateFormatException {
-        if(this.lastBuildDate != null)
+        if (this.lastBuildDate != null) {
             return this.lastBuildDate;
+        }
 
         String lastBuildDateString = getLastBuildDateString();
-        if(lastBuildDateString == null)
+        if (lastBuildDateString == null) {
             return null;
+        }
 
         return this.lastBuildDate = DateUtils.stringToDate(lastBuildDateString);
     }
 
     public String getLastBuildDateString() {
-        if(this.lastBuildDateString != null)
+        if (this.lastBuildDateString != null) {
             return this.lastBuildDateString;
+        }
 
         Element lastBuildDateElement = this.channelElement.element("lastBuildDate");
-        if(lastBuildDateElement == null)
+        if (lastBuildDateElement == null) {
             return null;
+        }
 
         return this.lastBuildDateString = lastBuildDateElement.getText();
     }
@@ -225,53 +245,59 @@ public class Podcast {
         Element rootElement = this.document.getRootElement();
         Element channel = rootElement.element("channel");
         boolean hasiTunes = false;
-        if(channel.element("category") != null) {
-            for(Element child : (List<Element>) channel.elements("category")) {
-                if(!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
+        if (channel.element("category") != null) {
+            for (Element child : (List<Element>) channel.elements("category")) {
+                if (!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
                     categories.add(child.getText());
-                } else if("itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
+                } else if ("itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
                     hasiTunes = true;
                     //Clear Categories
                     categories.clear();
-                    if(child.elements("category").size() == 0) {
-                        if(child.attribute("text") != null)
+                    if (child.elements("category").size() == 0) {
+                        if (child.attribute("text") != null) {
                             categories.add(child.attributeValue("text"));
-                        else
+                        } else {
                             categories.add(child.getText());
+                        }
                     } else {
                         String finalCategory;
-                        if(child.attribute("text") != null)
+                        if (child.attribute("text") != null) {
                             finalCategory = child.attributeValue("text");
-                        else
+                        } else {
                             finalCategory = child.getText();
+                        }
 
-                        for(Element category : (List<Element>) child.elements("category")) {
-                            if(category.attribute("text") != null)
+                        for (Element category : (List<Element>) child.elements("category")) {
+                            if (category.attribute("text") != null) {
                                 finalCategory += " > " + category.attributeValue("text");
-                            else
+                            } else {
                                 finalCategory += " > " + category.getText();
+                            }
                         }
                         categories.add(finalCategory);
                     }
 
-                } else if(hasiTunes && "itunes".equalsIgnoreCase(child.getNamespacePrefix())) {
-                    if(child.elements("category").size() == 0) {
-                        if(child.attribute("text") != null)
+                } else if (hasiTunes && "itunes".equalsIgnoreCase(child.getNamespacePrefix())) {
+                    if (child.elements("category").size() == 0) {
+                        if (child.attribute("text") != null) {
                             categories.add(child.attributeValue("text"));
-                        else
+                        } else {
                             categories.add(child.getText());
+                        }
                     } else {
                         String finalCategory;
-                        if(child.attribute("text") != null)
+                        if (child.attribute("text") != null) {
                             finalCategory = child.attributeValue("text");
-                        else
+                        } else {
                             finalCategory = child.getText();
+                        }
 
-                        for(Element category : (List<Element>) child.elements("category")) {
-                            if(category.attribute("text") != null)
+                        for (Element category : (List<Element>) child.elements("category")) {
+                            if (category.attribute("text") != null) {
                                 finalCategory += " > " + category.attributeValue("text");
-                            else
+                            } else {
                                 finalCategory += " > " + category.getText();
+                            }
                         }
                         categories.add(finalCategory);
                     }
@@ -279,52 +305,63 @@ public class Podcast {
             }
         }
 
-        if(categories.size() == 0) return new String[0];
+        if (categories.size() == 0) {
+            return new String[0];
+        }
+
         String[] output = new String[categories.size()];
         categories.toArray(output);
         return output;
     }
 
     public String getGenerator() {
-        if(this.generator != null)
+        if (this.generator != null) {
             return this.generator;
+        }
 
         Element generatorElement = this.channelElement.element("generator");
-        if(generatorElement == null)
+        if (generatorElement == null) {
             return null;
+        }
 
         return this.generator = generatorElement.getText();
     }
 
     public URL getDocs() throws MalformedURLException {
-        if(this.docs != null)
+        if (this.docs != null) {
             return this.docs;
+        }
 
         Element docsElement = this.channelElement.element("docs");
-        if(docsElement == null)
+        if (docsElement == null) {
             return null;
+        }
 
         return this.docs = new URL(docsElement.getText());
     }
 
     public CloudInfo getCloud() {
-        if(this.cloudInfo != null)
+        if (this.cloudInfo != null) {
             return this.cloudInfo;
+        }
 
         Element cloudElement = this.channelElement.element("cloud");
-        if(cloudElement == null)
+        if (cloudElement == null) {
             return null;
+        }
 
         return this.cloudInfo = new CloudInfo(cloudElement);
     }
 
     public Integer getTTL() {
-        if(this.ttl != null)
+        if (this.ttl != null) {
             return this.ttl;
+        }
 
         Element ttlElement = this.channelElement.element("ttl");
-        if(ttlElement == null)
+        if (ttlElement == null) {
             return null;
+        }
 
         try {
             return this.ttl = Integer.valueOf(ttlElement.getTextTrim());
@@ -335,56 +372,63 @@ public class Podcast {
 
     public URL getImageURL() throws MalformedURLException {
         Element thumbnailElement = this.channelElement.element("thumbnail");
-        if(thumbnailElement != null)
+        if (thumbnailElement != null)
             return new URL(thumbnailElement.attributeValue("url"));
-        for(Element image : (List<Element>) this.channelElement.elements("image")) {
-            if("itunes".equalsIgnoreCase(image.getNamespacePrefix()))
+        for (Element image : (List<Element>) this.channelElement.elements("image")) {
+            if ("itunes".equalsIgnoreCase(image.getNamespacePrefix())) {
                 return new URL(image.attributeValue("href"));
-            else if(image.element("url") != null)
+            } else if (image.element("url") != null) {
                 return new URL(image.element("url").getText());
+            }
         }
 
         return null;
     }
 
     public String getPICSRating() {
-        if(this.picsRating != null)
+        if (this.picsRating != null) {
             return this.picsRating;
+        }
 
         Element ratingElement = this.channelElement.element("rating");
-        if(ratingElement == null)
+        if (ratingElement == null) {
             return null;
+        }
 
         return this.picsRating = ratingElement.getText();
     }
 
     public TextInputInfo getTextInput() {
-        if(this.textInputInfo != null)
+        if (this.textInputInfo != null)
             return this.textInputInfo;
 
         Element textInputElement = this.channelElement.element("textInput");
-        if(textInputElement == null)
+        if (textInputElement == null) {
             return null;
+        }
 
         return this.textInputInfo = new TextInputInfo(textInputElement);
     }
 
     public Set<Integer> getSkipHours() throws MalformedFeedException {
-        if(this.skipHours != null)
+        if (this.skipHours != null) {
             return this.skipHours;
+        }
 
         Element skipHoursElement = this.channelElement.element("skipHours");
-        if(skipHoursElement == null)
+        if (skipHoursElement == null) {
             return null;
+        }
 
         List hourElements = skipHoursElement.elements("hour");
-        if(hourElements.size() == 0)
+        if (hourElements.size() == 0) {
             return null;
+        }
 
         Set<Integer> skipHours = new HashSet<>();
 
-        for(Object hourObject : hourElements) {
-            if(hourObject instanceof Element) {
+        for (Object hourObject : hourElements) {
+            if (hourObject instanceof Element) {
                 Element hourElement = (Element) hourObject;
                 int hour;
                 try {
@@ -393,59 +437,66 @@ public class Podcast {
                     throw new MalformedFeedException("Invalid hour in skipHours element.");
                 }
 
-                if(hour < 0 || hour > 23)
+                if (hour < 0 || hour > 23) {
                     throw new MalformedFeedException("Hour in skipHours element is outside of valid range 0 - 23");
+                }
 
                 skipHours.add(hour);
             }
         }
 
-        if(skipHours.size() == 0)
+        if (skipHours.size() == 0) {
             return null;
+        }
 
         return this.skipHours = Collections.unmodifiableSet(skipHours);
     }
 
     public Set<String> getSkipDays() throws MalformedFeedException {
-        if(this.skipDays != null)
+        if (this.skipDays != null) {
             return this.skipDays;
+        }
 
         Element skipDaysElement = this.channelElement.element("skipDays");
-        if(skipDaysElement == null)
+        if (skipDaysElement == null) {
             return null;
+        }
 
         List dayElements = skipDaysElement.elements("day");
-        if(dayElements.size() == 0)
+        if (dayElements.size() == 0) {
             return null;
+        }
 
-        if(dayElements.size() > 7)
+        if (dayElements.size() > 7) {
             throw new MalformedFeedException("More than 7 day elements present within skipDays element.");
+        }
 
         Set<String> skipDays = new HashSet<>();
 
         final String[] validDays = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
                 "Sunday"};
 
-        for(Object dayObject : dayElements) {
-            if(dayObject instanceof Element) {
+        for (Object dayObject : dayElements) {
+            if (dayObject instanceof Element) {
                 Element dayElement = (Element) dayObject;
                 String day = dayElement.getTextTrim();
-                if(day == null || day.isEmpty())
+                if (day == null || day.isEmpty())
                     continue;
 
                 boolean valid = false;
-                for(String validDay : validDays) {
-                    if(day.equalsIgnoreCase(validDay))
+                for (String validDay : validDays) {
+                    if (day.equalsIgnoreCase(validDay))
                         valid = true;
                 }
 
-                if(valid)
+                if (valid)
                     skipDays.add(day);
             }
         }
 
-        if(skipDays.size() == 0)
+        if (skipDays.size() == 0) {
             return null;
+        }
 
         return this.skipDays = Collections.unmodifiableSet(skipDays);
     }
@@ -456,25 +507,31 @@ public class Podcast {
         Element rootElement = this.document.getRootElement();
         Element channel = rootElement.element("channel");
         boolean hasiTunes = false;
-        if(channel.element("keywords") != null) {
-            for(Element child : (List<Element>) channel.elements("keywords")) {
-                if(!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
-                    for(String kw : child.getText().split(","))
+        if (channel.element("keywords") != null) {
+            for (Element child : (List<Element>) channel.elements("keywords")) {
+                if (!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
+                    for (String kw : child.getText().split(",")) {
                         keywords.add(kw.trim());
-                } else if("itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
+                    }
+                } else if ("itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
                     hasiTunes = true;
                     //Clear Categories
                     keywords.clear();
-                    for(String kw : child.getText().split(","))
+                    for (String kw : child.getText().split(",")) {
                         keywords.add(kw.trim());
-                } else if(hasiTunes) {
-                    for(String kw : child.getText().split(","))
+                    }
+                } else if (hasiTunes) {
+                    for (String kw : child.getText().split(",")) {
                         keywords.add(kw.trim());
+                    }
                 }
             }
         }
 
-        if(keywords.size() == 0) return new String[0];
+        if (keywords.size() == 0) {
+            return new String[0];
+        }
+
         String[] output = new String[keywords.size()];
         keywords.toArray(output);
         return output;
@@ -482,26 +539,30 @@ public class Podcast {
 
     //Episodes
     public List<Episode> getEpisodes() {
-        if(this.episodes != null)
+        if (this.episodes != null) {
             return this.episodes;
+        }
 
         List<Episode> episodes = new ArrayList<>();
-        for(Object itemObject : this.rootElement.elements("item")) {
-            if(!(itemObject instanceof Element))
+        for (Object itemObject : this.rootElement.elements("item")) {
+            if (!(itemObject instanceof Element)) {
                 continue;
+            }
 
             episodes.add(new Episode((Element) itemObject));
         }
 
-        if(episodes.size() == 0)
+        if (episodes.size() == 0) {
             return null;
+        }
 
         return this.episodes = Collections.unmodifiableList(episodes);
     }
 
     public ITunesChannelInfo getITunesInfo() {
-        if(this.iTunesChannelInfo != null)
+        if (this.iTunesChannelInfo != null) {
             return this.iTunesChannelInfo;
+        }
 
         return this.iTunesChannelInfo = new ITunesChannelInfo(this.channelElement);
     }

@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Podcast unit test class.
@@ -15,16 +16,22 @@ import static org.junit.Assert.assertEquals;
 public class PodcastTest {
 
     @Test
-    public void testPodcastFeedCreation(){
+    public void testPodcastFeed() {
         try {
             Podcast podcast = new Podcast(new URL("http://feeds.feedburner.com/thetimferrissshow"));
             assertEquals("The Tim Ferriss Show", podcast.getTitle());
-        } catch (InvalidFeedException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (MalformedFeedException e) {
-            e.printStackTrace();
+        } catch (InvalidFeedException | MalformedURLException | MalformedFeedException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRelayFeed() {
+        try {
+            Podcast podcast = new Podcast(new URL("https://www.relay.fm/master/feed"));
+            assertEquals("Relay FM Master Feed", podcast.getTitle());
+        } catch (InvalidFeedException | MalformedURLException | MalformedFeedException e) {
+            fail(e.getMessage());
         }
     }
 
