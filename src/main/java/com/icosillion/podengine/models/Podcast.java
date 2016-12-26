@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 public class Podcast {
@@ -38,9 +39,14 @@ public class Podcast {
     private List<Episode> episodes;
 
     public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
+        URLConnection ic = null;
         InputStream is = null;
+
         try {
-            is = feed.openStream();
+            ic = feed.openConnection();
+            ic.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
+            is = ic.getInputStream();
+
             this.feedURL = feed;
             this.xmlData = IOUtils.toString(is);
             this.document = DocumentHelper.parseText(xmlData);
