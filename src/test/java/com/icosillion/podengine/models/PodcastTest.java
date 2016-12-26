@@ -17,9 +17,8 @@ public class PodcastTest {
     @Test
     public void testPodcastFeedCreation(){
         try {
-            Podcast podcast = new Podcast(new URL("https://www.relay.fm/cortex/feed"));
-            System.out.println(podcast.getTitle());
-            System.out.println(podcast.getDescription());
+            Podcast podcast = new Podcast(new URL("http://feeds.feedburner.com/thetimferrissshow"));
+            assertEquals("The Tim Ferriss Show", podcast.getTitle());
         } catch (InvalidFeedException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
