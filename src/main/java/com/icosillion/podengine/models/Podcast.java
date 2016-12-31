@@ -544,7 +544,7 @@ public class Podcast {
         }
 
         List<Episode> episodes = new ArrayList<>();
-        for (Object itemObject : this.rootElement.elements("item")) {
+        for (Object itemObject : this.channelElement.elements("item")) {
             if (!(itemObject instanceof Element)) {
                 continue;
             }
