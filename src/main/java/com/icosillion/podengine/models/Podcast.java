@@ -56,6 +56,7 @@ public class Podcast {
                 throw new MalformedFeedException("Missing required channel element.");
             }
         } catch (IOException e) {
+            e.printStackTrace();
             throw new InvalidFeedException("Error reading feed.", e);
         } catch (DocumentException e) {
             throw new InvalidFeedException("Error parsing feed XML.", e);
