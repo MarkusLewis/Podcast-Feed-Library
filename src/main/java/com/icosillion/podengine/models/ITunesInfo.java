@@ -1,6 +1,7 @@
 package com.icosillion.podengine.models;
 
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
 
 import java.net.MalformedURLException;
@@ -12,14 +13,16 @@ public abstract class ITunesInfo {
         EXPLICIT, CLEAN, UNKNOWN
     }
 
-    final Element parent;
-    private String author, subtitle, summary;
+    protected final Element parent;
+    protected final Namespace iTunesNamespace;
+    private String author, subtitle, summary, imageString;
     private ExplicitLevel explicit;
     private Boolean block;
     private URL image;
 
     public ITunesInfo(Element parent) {
         this.parent = parent;
+        this.iTunesNamespace = this.parent.getNamespaceForPrefix("itunes");
     }
 
     public String getAuthor() {
@@ -27,7 +30,7 @@ public abstract class ITunesInfo {
             return this.author;
         }
 
-        Element authorElement = this.parent.element(QName.get("author", "itunes"));
+        Element authorElement = this.parent.element(QName.get("author", this.iTunesNamespace));
         if (authorElement == null) {
             return null;
         }
@@ -40,7 +43,7 @@ public abstract class ITunesInfo {
             return this.subtitle;
         }
 
-        Element subtitleElement = this.parent.element(QName.get("subtitle", "itunes"));
+        Element subtitleElement = this.parent.element(QName.get("subtitle", this.iTunesNamespace));
         if (subtitleElement == null) {
             return null;
         }
@@ -53,7 +56,7 @@ public abstract class ITunesInfo {
             return this.summary;
         }
 
-        Element summaryElement = this.parent.element(QName.get("summary", "itunes"));
+        Element summaryElement = this.parent.element(QName.get("summary", this.iTunesNamespace));
         if (summaryElement == null) {
             return null;
         }
@@ -66,7 +69,7 @@ public abstract class ITunesInfo {
             return this.block;
         }
 
-        Element blockElement = this.parent.element(QName.get("block", "itunes"));
+        Element blockElement = this.parent.element(QName.get("block", this.iTunesNamespace));
         if (blockElement == null) {
             return this.block = false;
         }
@@ -79,7 +82,7 @@ public abstract class ITunesInfo {
             return this.explicit;
         }
 
-        Element explicitElement = this.parent.element(QName.get("explicit", "itunes"));
+        Element explicitElement = this.parent.element(QName.get("explicit", this.iTunesNamespace));
         if (explicitElement == null) {
             return this.explicit = ExplicitLevel.UNKNOWN;
         }
@@ -97,15 +100,25 @@ public abstract class ITunesInfo {
     }
 
     public URL getImage() throws MalformedURLException {
-        if (this.image != null) {
-            return this.image;
+        String imageString = this.getImageString();
+
+        if (imageString == null) {
+            return null;
         }
 
-        Element imageElement = this.parent.element(QName.get("image", "itunes"));
+        return this.image = new URL(imageString);
+    }
+
+    public String getImageString() {
+        if (this.imageString != null) {
+            return this.imageString;
+        }
+
+        Element imageElement = this.parent.element(QName.get("image", this.iTunesNamespace));
         if (imageElement == null) {
             return null;
         }
 
-        return this.image = new URL(imageElement.getTextTrim());
+        return this.imageString = imageElement.attributeValue("href");
     }
 }

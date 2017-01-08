@@ -18,7 +18,7 @@ public class ITunesItemInfo extends ITunesInfo {
             return this.duration;
         }
 
-        Element durationElement = this.parent.element(QName.get("duration", "itunes"));
+        Element durationElement = this.parent.element(QName.get("duration", this.iTunesNamespace));
         if (durationElement == null) {
             return null;
         }
@@ -26,12 +26,12 @@ public class ITunesItemInfo extends ITunesInfo {
         return this.duration = durationElement.getText();
     }
 
-    public boolean isCloseCaptioned() {
+    public boolean isClosedCaptioned() {
         if (this.isClosedCaptioned != null) {
             return this.isClosedCaptioned;
         }
 
-        Element isClosedCaptionedElement = this.parent.element(QName.get("isClosedCaptioned", "itunes"));
+        Element isClosedCaptionedElement = this.parent.element(QName.get("isClosedCaptioned", this.iTunesNamespace));
         if (isClosedCaptionedElement == null) {
             return this.isClosedCaptioned = false;
         }
@@ -48,7 +48,7 @@ public class ITunesItemInfo extends ITunesInfo {
             return this.order;
         }
 
-        Element orderElement = this.parent.element(QName.get("order", "itunes"));
+        Element orderElement = this.parent.element(QName.get("order", this.iTunesNamespace));
         if (orderElement == null) {
             return null;
         }

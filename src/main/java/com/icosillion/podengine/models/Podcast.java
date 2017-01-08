@@ -27,7 +27,7 @@ public class Podcast {
 
     //Caching
     private String title, description, language, copyright, managingEditor, webMaster, pubDateString,
-            lastBuildDateString, generator, picsRating;
+            lastBuildDateString, generator, picsRating, docsString;
     private URL link, docs;
     private Date pubDate, lastBuildDate;
     private CloudInfo cloudInfo;
@@ -332,12 +332,25 @@ public class Podcast {
             return this.docs;
         }
 
+        String docsString = this.getDocsString();
+        if (docsString == null) {
+            return null;
+        }
+
+        return this.docs = new URL(docsString);
+    }
+
+    public String getDocsString() {
+        if (this.docsString != null) {
+            return this.docsString;
+        }
+
         Element docsElement = this.channelElement.element("docs");
         if (docsElement == null) {
             return null;
         }
 
-        return this.docs = new URL(docsElement.getText());
+        return this.docsString = docsElement.getText();
     }
 
     public CloudInfo getCloud() {
