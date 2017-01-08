@@ -29,7 +29,7 @@ public class EpisodeTest {
     }
 
     @Test
-    public void testThirdEpisode() throws MalformedFeedException, MalformedURLException, DateFormatException {
+    public void testEpisode() throws MalformedFeedException, MalformedURLException, DateFormatException {
         List<Episode> episodes = podcast.getEpisodes();
         Episode episode = episodes.get(0);
 
