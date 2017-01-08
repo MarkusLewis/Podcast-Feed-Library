@@ -5,14 +5,12 @@ import com.icosillion.podengine.exceptions.MalformedFeedException;
 import com.icosillion.podengine.utils.DateUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Episode {
 
@@ -168,19 +166,11 @@ public class Episode {
             return this.categories;
         }
 
-        Element categoriesElement = this.itemElement.element("categories");
-        if (categoriesElement == null || categoriesElement.elements().size() == 0) {
-            return null;
-        }
+        List<Element> categoryElements = this.itemElement.elements("category");
 
         Set<String> categories = new HashSet<>();
-        for (Object elementObject : categoriesElement.elements("category")) {
-            if (!(elementObject instanceof Element)) {
-                continue;
-            }
-
-            Element categoryElement = (Element) elementObject;
-            categories.add(categoryElement.getText());
+        for (Element element : categoryElements) {
+            categories.add(element.getTextTrim());
         }
 
         return this.categories = Collections.unmodifiableSet(categories);
@@ -248,7 +238,7 @@ public class Episode {
             return null;
         }
 
-        Attribute urlAttribute = this.itemElement.attribute("url");
+        Attribute urlAttribute = sourceElement.attribute("url");
         if (urlAttribute == null) {
             throw new MalformedFeedException("Missing required attribute URL for element Source.");
         }
@@ -269,7 +259,8 @@ public class Episode {
             return this.contentEncoded;
         }
 
-        Element contentEncodedElement = this.itemElement.element(QName.get("encoded", "content"));
+        Namespace namespace = this.itemElement.getNamespaceForPrefix("content");
+        Element contentEncodedElement = this.itemElement.element(QName.get("encoded", namespace));
         if (contentEncodedElement == null) {
             return null;
         }

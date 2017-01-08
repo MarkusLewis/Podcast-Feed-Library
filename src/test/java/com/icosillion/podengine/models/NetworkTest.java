@@ -13,7 +13,7 @@ import static org.junit.Assert.fail;
 /**
  * Podcast unit test class.
  */
-public class PodcastTest {
+public class NetworkTest {
 
     @Test
     public void testPodcastFeed() {

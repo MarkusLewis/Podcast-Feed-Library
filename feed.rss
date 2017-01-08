@@ -1,0 +1,71 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:admin="http://webns.net/mvcb/" xmlns:atom="http://www.w3.org/2005/Atom/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+    <channel>
+        <title>Testing Feed</title>
+        <link>https://podcast-feed-library.owl.im/feed</link>
+        <pubDate>Mon, 12 Dec 2016 15:30:00 GMT</pubDate>
+        <lastBuildDate>Mon, 12 Dec 2016 15:30:00 GMT</lastBuildDate>
+        <description>A dummy podcast feed for testing the Podcast Feed Library.</description>
+        <managingEditor>Marcus Lewis (marcus@icosillion.com)</managingEditor>
+        <webMaster>Marcus Lewis (marcus@icosillion.com)</webMaster>
+        <language>en-GB</language>
+        <copyright>Copyright © 2017 Icosillion</copyright>
+        <generator>Handcrafted</generator>
+        <docs>https://podcast-feed-library.owl.im/docs</docs>
+        <ttl>60</ttl>
+        <skipHours>
+            <hour>0</hour>
+            <hour>4</hour>
+            <hour>8</hour>
+            <hour>12</hour>
+            <hour>16</hour>
+        </skipHours>
+        <skipDays>
+            <day>Monday</day>
+            <day>Wednesday</day>
+            <day>Friday</day>
+        </skipDays>
+        <textInput>
+            <title>Feedback</title>
+            <description>Feedback for the Testing Feed</description>
+            <name>feedback</name>
+            <link>https://podcast-feed-library.owl.im/feedback/submit</link>
+        </textInput>
+        <cloud domain="rpc.owl.im" port="8080" path="/rpc" registerProcedure="owl.register" protocol="xml-rpc" />
+        <itunes:author>Icosillion</itunes:author>
+        <itunes:subtitle>A dummy podcast feed for testing the Podcast Feed Library.</itunes:subtitle>
+        <itunes:summary>This podcast brings testing capabilities to the Podcast Feed Library</itunes:summary>
+        <itunes:keywords>podcast, java, xml, dom4j, icosillion, maven</itunes:keywords>
+        <itunes:explicit>clean</itunes:explicit>
+        <itunes:image href="https://podcast-feed-library.owl.im/images/artwork.png" />
+        <itunes:owner>
+            <itunes:name>Icosillion</itunes:name>
+            <itunes:email>hello@icosillion.com</itunes:email>
+        </itunes:owner>
+        <itunes:block>no</itunes:block>
+        <itunes:category text="Technology" />
+        <item>
+            <title>Episode 1: Are you not getting bored yet?</title>
+            <description>Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.</description>
+            <pubDate>Mon, 28 Nov 2016 13:30:00 GMT</pubDate>
+            <enclosure url="https://podcast-feed-library.owl.im/audio/episode-1.mp3" length="1234000" type="audio/mp3" />
+            <link>https://podcast-feed-library.owl.im/episodes/1</link>
+            <guid>https://podcast-feed-library.owl.im/episodes/1</guid>
+            <comments>https://podcast-feed-library.owl.im/episodes/1/comments</comments>
+            <category>Technology</category>
+            <category>Testing</category>
+            <source url="http://podcast-feed-library.owl.im/feed.rss">Master Feed</source>
+            <itunes:author>Icosillion</itunes:author>
+            <itunes:subtitle>Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.</itunes:subtitle>
+            <itunes:summary>Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.</itunes:summary>
+            <itunes:explicit>clean</itunes:explicit>
+            <itunes:duration>12:34</itunes:duration>
+            <itunes:block>no</itunes:block>
+            <itunes:image href="https://podcast-feed-library.owl.im/images/artwork.png" />
+            <itunes:isClosedCaptioned>no</itunes:isClosedCaptioned>
+            <itunes:order>1</itunes:order>
+            <content:encoded>Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.
+                The show notes live in this section, but we have nothing else interesting to say.
+            </content:encoded>
+        </item>
+    </channel>
+</rss>
