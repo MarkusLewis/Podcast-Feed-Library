@@ -44,7 +44,7 @@ public class Podcast {
 
         try {
             ic = feed.openConnection();
-            ic.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
+            ic.setRequestProperty("User-Agent", "PodEngine/2.0");
             is = ic.getInputStream();
 
             this.feedURL = feed;
