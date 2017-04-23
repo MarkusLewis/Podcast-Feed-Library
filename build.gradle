@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+group = 'com.icosillion.podengine'
+version = '2.0'
+
+description = """Simple library to read podcast feeds"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'dom4j', name: 'dom4j', version:'1.6.1'
+    compile group: 'commons-io', name: 'commons-io', version:'2.5'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+}
+
+publishing {
+    repositories {
+        maven {
+            url 'https://maven.icosillion.com/artifactory/open-source/'
+            credentials {
+                username binding.variables.containsKey("deploymentUser") ? binding.variables.get("deploymentUser") : ""
+                password binding.variables.containsKey("deploymentUser") ? binding.variables.get("deploymentPassword") : ""
+            }
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

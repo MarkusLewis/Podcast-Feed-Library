@@ -1,32 +1,57 @@
-# Java Podcast Feed Parser
-_Simple library to read podcast feeds_
+# PodEngine 2.0 – Podcast Feed Library
 
-__Version__ 2.0.0-SNAPSHOT
+## Java library for parsing your podcast feeds 🚀
+* Written in Java 7 🤖
+* Thoroughly tested 🕹️
+* Parses iTunes-specific tags 🎵
+* Handles all RSS attributes 💪
+* MIT Licensed (Use it for all your commercial things!) 🤑
 
-## Usage
-__Read Feed__
-	
-	Podcast podcast = new Podcast(new URL("FEED URL"));
-	System.out.println("Title - " + podcast.getTitle());
+## Installation 📦
+### Gradle
+```groovy
+repositories {
+    maven {
+        url 'https://maven.icosillion.com/artifactory/open-source/'
+    }
+}
 
-__Get Episodes__
+dependencies {
+    compile 'com.icosillion.podengine:podengine:2.0'
+}
+```
 
-	Podcast podcast = new Podcast(new URL("FEED URL"));
-	List<Episode> episodes = podcast.getEpisodes();
-	for(Episode episode : episodes) {
-		System.out.println("Episode Title - " + episode.getTitle());
-	}
+### Maven
+```xml
+<repositories>
+    <repository>
+        <id>icosillion</id>
+        <name>Icosillion Repository</name>
+        <url>https://maven.icosillion.com/artifactory/open-source/</url>
+    </repoistory>
+</repositories>
 
-## Dependencies
-[dom4j](http://dom4j.sourceforge.net/) _XML Parsing Library_
+<dependencies>
+    <dependency>
+        <groupId>com.icosillion.podengine</groupId>
+        <artifactId>podengine</artifactId>
+        <version>2.0</version>
+    </dependency>
+</dependencies>
+```
 
-[Apache Commons IO](https://commons.apache.org/proper/commons-io/) _IO Utilities_
+## Getting Started 🌱
+### Reading your feed
+```java
+//Download and parse the Cortex RSS feed
+Podcast podcast = new Podcast(new URL("https://www.relay.fm/cortex/feed"));
 
-## License (MIT)
-	Copyright (c) 2017 Icosillion
+//Display Feed Details
+System.out.printf("💼 %s has %d episodes!\n", podcast.getTitle(), podcast.getEpisodes().size());
 
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//List all episodes
+for (Episode episode : episodes) {
+	System.out.println("- " + episode.getTitle());
+}
+```
 
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
