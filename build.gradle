@@ -25,8 +25,8 @@ publishing {
         maven {
             url 'https://maven.icosillion.com/artifactory/open-source/'
             credentials {
-                username binding.variables.containsKey("deploymentUser") ? binding.variables.get("deploymentUser") : ""
-                password binding.variables.containsKey("deploymentUser") ? binding.variables.get("deploymentPassword") : ""
+                username project.properties.containsKey("deploymentUser") ? project.properties.get("deploymentUser") : ""
+                password project.properties.containsKey("deploymentPassword") ? project.properties.get("deploymentPassword") : ""
             }
         }
     }
