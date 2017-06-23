@@ -66,5 +66,7 @@ public class EpisodeTest {
         assertEquals("12:34", iTunesInfo.getDuration());
         assertFalse(iTunesInfo.isClosedCaptioned());
         assertEquals(1, (int) iTunesInfo.getOrder());
+        assertEquals(1, (int) iTunesInfo.getSeasonNumber());
+        assertEquals(1, (int) iTunesInfo.getEpisodeNumber());
     }
 }

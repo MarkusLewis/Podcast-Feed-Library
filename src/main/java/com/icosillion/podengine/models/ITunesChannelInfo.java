@@ -8,10 +8,15 @@ import java.net.URL;
 
 public class ITunesChannelInfo extends ITunesInfo {
 
+    public enum FeedType {
+        EPISODIC, SERIAL
+    }
+
     //TODO Category
     private Boolean complete;
     private URL newFeedURL;
     private ITunesOwner owner;
+    private FeedType type;
 
     public ITunesChannelInfo(Element parent) {
         super(parent);
@@ -22,7 +27,7 @@ public class ITunesChannelInfo extends ITunesInfo {
             return this.complete;
         }
 
-        Element completeElement = this.parent.element(QName.get("complete", "itunes"));
+        Element completeElement = this.parent.element(QName.get("complete", this.iTunesNamespace));
         if (completeElement == null) {
             return this.complete = false;
         }
@@ -39,7 +44,7 @@ public class ITunesChannelInfo extends ITunesInfo {
             return this.newFeedURL;
         }
 
-        Element newFeedURLElement = this.parent.element(QName.get("new-feed-url", "itunes"));
+        Element newFeedURLElement = this.parent.element(QName.get("new-feed-url", this.iTunesNamespace));
         if (newFeedURLElement == null) {
             return null;
         }
@@ -52,11 +57,32 @@ public class ITunesChannelInfo extends ITunesInfo {
             return this.owner;
         }
 
-        Element ownerElement = this.parent.element(QName.get("owner", "itunes"));
+        Element ownerElement = this.parent.element(QName.get("owner", this.iTunesNamespace));
         if (ownerElement == null) {
             return null;
         }
 
         return this.owner = new ITunesOwner(ownerElement);
+    }
+
+    public FeedType getType() {
+        if (this.type != null) {
+            return this.type;
+        }
+
+        Element typeElement = this.parent.element(QName.get("type", this.iTunesNamespace));
+        if (typeElement == null) {
+            return this.type = FeedType.EPISODIC;
+        }
+
+        String rawType = typeElement.getTextTrim().toLowerCase();
+
+        if (rawType.equals("episodic")) {
+            this.type = FeedType.EPISODIC;
+        } else if (rawType.equals("serial")) {
+            this.type = FeedType.SERIAL;
+        }
+
+        return this.type;
     }
 }

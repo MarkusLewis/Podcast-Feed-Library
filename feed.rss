@@ -43,6 +43,7 @@
         </itunes:owner>
         <itunes:block>no</itunes:block>
         <itunes:category text="Technology" />
+        <itunes:type>serial</itunes:type>
         <item>
             <title>Episode 1: Are you not getting bored yet?</title>
             <description>Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.</description>
@@ -62,6 +63,9 @@
             <itunes:block>no</itunes:block>
             <itunes:image href="https://podcast-feed-library.owl.im/images/artwork.png" />
             <itunes:isClosedCaptioned>no</itunes:isClosedCaptioned>
+            <itunes:order>1</itunes:order>
+            <itunes:season>1</itunes:season>
+            <itunes:episode>1</itunes:episode>
             <itunes:order>1</itunes:order>
             <content:encoded>Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.
                 The show notes live in this section, but we have nothing else interesting to say.

@@ -78,6 +78,7 @@ public class PodcastOverviewTest {
         assertEquals(false, iTunesInfo.isBlocked());
         assertEquals(ITunesInfo.ExplicitLevel.CLEAN, iTunesInfo.getExplicit());
         assertEquals("https://podcast-feed-library.owl.im/images/artwork.png", iTunesInfo.getImage().toString());
+        assertEquals(ITunesChannelInfo.FeedType.SERIAL, iTunesInfo.getType());
     }
 
     @Test
