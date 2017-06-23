@@ -1,4 +1,4 @@
-# PodEngine 2.0 – Podcast Feed Library
+# PodEngine 2.1 – Podcast Feed Library
 
 ## Java library for parsing your podcast feeds 🚀
 * Written in Java 7 🤖
@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.icosillion.podengine:podengine:2.0'
+    compile 'com.icosillion.podengine:podengine:2.1'
 }
 ```
 
