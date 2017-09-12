@@ -10,7 +10,7 @@ import java.net.URL;
 public abstract class ITunesInfo {
 
     public enum ExplicitLevel {
-        EXPLICIT, CLEAN, UNKNOWN
+        EXPLICIT, CLEAN, NO, UNKNOWN
     }
 
     protected final Element parent;
@@ -90,6 +90,10 @@ public abstract class ITunesInfo {
         String explicitText = explicitElement.getTextTrim();
         if ("yes".equalsIgnoreCase(explicitText)) {
             return this.explicit = ExplicitLevel.EXPLICIT;
+        }
+
+        if ("no".equalsIgnoreCase(explicitText)) {
+            return this.explicit = ExplicitLevel.NO;
         }
 
         if ("clean".equalsIgnoreCase(explicitText)) {

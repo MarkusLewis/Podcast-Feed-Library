@@ -22,6 +22,7 @@ public class Podcast {
     private String xmlData;
     private Document document;
     private URL feedURL;
+    private URL resolvedURL;
 
     private Element rootElement, channelElement;
 
@@ -54,6 +55,7 @@ public class Podcast {
             bomInputStream = new BOMInputStream(is, false);
 
             this.feedURL = feed;
+            this.resolvedURL = ic.getURL();
             this.xmlData = IOUtils.toString(bomInputStream);
             this.document = DocumentHelper.parseText(xmlData);
             this.rootElement = this.document.getRootElement();
@@ -593,5 +595,9 @@ public class Podcast {
 
     public URL getFeedURL() {
         return feedURL;
+    }
+
+    public URL getResolvedURL() {
+        return resolvedURL;
     }
 }
