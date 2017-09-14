@@ -6,7 +6,7 @@ import org.dom4j.QName;
 public class ITunesItemInfo extends ITunesInfo {
 
     public enum EpisodeType {
-        FULL, TRAILER, BONUS
+        FULL, TRAILER, BONUS, UNKNOWN
     }
 
     private String duration;
@@ -124,7 +124,7 @@ public class ITunesItemInfo extends ITunesInfo {
 
         Element episodeTypeElement = this.parent.element(QName.get("episodeType", this.iTunesNamespace));
         if (episodeTypeElement == null) {
-            return this.episodeType = EpisodeType.FULL;
+            return this.episodeType = EpisodeType.UNKNOWN;
         }
 
         String rawEpisodeType = episodeTypeElement.getTextTrim().toLowerCase();
@@ -139,7 +139,7 @@ public class ITunesItemInfo extends ITunesInfo {
                 this.episodeType = EpisodeType.FULL;
                 break;
             default:
-                this.episodeType = EpisodeType.FULL;
+                this.episodeType = EpisodeType.UNKNOWN;
                 break;
         }
 
