@@ -1,16 +1,19 @@
 package com.icosillion.podengine.models;
 
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
 
 public class ITunesOwner {
 
     private final Element ownerElement;
+    protected final Namespace iTunesNamespace;
 
     private String name, email;
 
     public ITunesOwner(Element ownerElement) {
         this.ownerElement = ownerElement;
+        this.iTunesNamespace = this.ownerElement.getNamespaceForPrefix("itunes");
     }
 
     public String getName() {
@@ -18,7 +21,7 @@ public class ITunesOwner {
             return this.name;
         }
 
-        Element nameElement = this.ownerElement.element(QName.get("name", "itunes"));
+        Element nameElement = this.ownerElement.element(QName.get("name", this.iTunesNamespace));
         if (nameElement == null) {
             return null;
         }
@@ -31,7 +34,7 @@ public class ITunesOwner {
             return this.email;
         }
 
-        Element emailElement = this.ownerElement.element(QName.get("email", "itunes"));
+        Element emailElement = this.ownerElement.element(QName.get("email", this.iTunesNamespace));
         if (emailElement == null) {
             return null;
         }
