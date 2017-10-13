@@ -18,7 +18,7 @@ public class NetworkTest {
     @Test
     public void testPodcastFeed() {
         try {
-            Podcast podcast = new Podcast(new URL("http://feeds.feedburner.com/thetimferrissshow"));
+            Podcast podcast = new Podcast(new URL("https://rss.art19.com/tim-ferriss-show"));
             assertEquals("The Tim Ferriss Show", podcast.getTitle());
         } catch (InvalidFeedException | MalformedURLException | MalformedFeedException e) {
             fail(e.getMessage());
