@@ -82,6 +82,13 @@ public class PodcastOverviewTest {
     }
 
     @Test
+    public void testITunesOwnerInfo() {
+        ITunesOwner iTunesOwner = podcast.getITunesInfo().getOwner();
+        assertEquals("Icosillion", iTunesOwner.getName());
+        assertEquals("hello@icosillion.com", iTunesOwner.getEmail());
+    }
+
+    @Test
     public void testCloudInfo() {
         CloudInfo cloudInfo = podcast.getCloud();
         assertEquals("rpc.owl.im", cloudInfo.getDomain());
