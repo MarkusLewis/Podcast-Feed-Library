@@ -5,11 +5,11 @@ import com.icosillion.podengine.exceptions.InvalidFeedException;
 import com.icosillion.podengine.exceptions.MalformedFeedException;
 import com.icosillion.podengine.utils.DateUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -41,14 +41,19 @@ public class Podcast {
     public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
         URLConnection ic = null;
         InputStream is = null;
+        BOMInputStream bomInputStream = null;
 
         try {
+            //Open Connection
             ic = feed.openConnection();
-            ic.setRequestProperty("User-Agent", "PodEngine/2.0");
+            ic.setRequestProperty("User-Agent", "PodEngine/2.2");
             is = ic.getInputStream();
 
+            //Create BOMInputStream to strip any Byte Order Marks
+            bomInputStream = new BOMInputStream(is, false);
+
             this.feedURL = feed;
-            this.xmlData = IOUtils.toString(is);
+            this.xmlData = IOUtils.toString(bomInputStream);
             this.document = DocumentHelper.parseText(xmlData);
             this.rootElement = this.document.getRootElement();
             this.channelElement = this.rootElement.element("channel");
@@ -60,6 +65,7 @@ public class Podcast {
         } catch (DocumentException e) {
             throw new InvalidFeedException("Error parsing feed XML.", e);
         } finally {
+            IOUtils.closeQuietly(bomInputStream);
             IOUtils.closeQuietly(is);
         }
     }
