@@ -12,6 +12,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -39,13 +40,14 @@ public class Podcast {
     private List<Episode> episodes;
 
     public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
-        URLConnection ic = null;
+        HttpURLConnection ic = null;
         InputStream is = null;
         BOMInputStream bomInputStream = null;
 
         try {
             //Open Connection
-            ic = feed.openConnection();
+            ic = (HttpURLConnection) feed.openConnection();
+            ic.setInstanceFollowRedirects(true);
             ic.setRequestProperty("User-Agent", "PodEngine/2.2");
             is = ic.getInputStream();
 
