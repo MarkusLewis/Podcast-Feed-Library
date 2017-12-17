@@ -38,7 +38,7 @@ public class PodcastOverviewTest {
         assertEquals(DateUtils.stringToDate("Mon, 12 Dec 2016 15:30:00 GMT"), podcast.getPubDate());
         assertEquals(DateUtils.stringToDate("Mon, 12 Dec 2016 15:30:00 GMT"), podcast.getLastBuildDate());
         assertEquals("Mon, 12 Dec 2016 15:30:00 GMT", podcast.getLastBuildDateString());
-        assertArrayEquals(new String[] { "Technology" }, podcast.getCategories());
+        assertArrayEquals(new String[] { "Technology > Tech News", "Business" }, podcast.getCategories());
         assertEquals("Handcrafted", podcast.getGenerator());
         assertEquals("https://podcast-feed-library.owl.im/docs", podcast.getDocs().toString());
         assertEquals(60, (int) podcast.getTTL());
@@ -86,6 +86,25 @@ public class PodcastOverviewTest {
         ITunesOwner iTunesOwner = podcast.getITunesInfo().getOwner();
         assertEquals("Icosillion", iTunesOwner.getName());
         assertEquals("hello@icosillion.com", iTunesOwner.getEmail());
+    }
+
+    @Test
+    public void testITunesCategories() {
+        Set<Category> categories = podcast.getITunesInfo().getCategories();
+
+        assertEquals(2, categories.size());
+
+        Category category = (Category) categories.toArray()[0];
+        assertEquals("Technology", category.getName());
+        assertEquals("Technology > Tech News", category.toString());
+        assertEquals(1, category.getSubcategories().size());
+        Category subcategory = (Category) category.getSubcategories().toArray()[0];
+        assertEquals("Tech News", subcategory.getName());
+
+        category = (Category) categories.toArray()[1];
+        assertEquals("Business", category.getName());
+        assertEquals("Business", category.toString());
+        assertEquals(0, category.getSubcategories().size());
     }
 
     @Test

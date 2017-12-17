@@ -253,7 +253,7 @@ public class Podcast {
         Element channel = rootElement.element("channel");
         boolean hasiTunes = false;
         if (channel.element("category") != null) {
-            for (Element child : (List<Element>) channel.elements("category")) {
+            for (Element child : channel.elements("category")) {
                 if (!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
                     categories.add(child.getText());
                 } else if ("itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
@@ -299,7 +299,7 @@ public class Podcast {
                             finalCategory = child.getText();
                         }
 
-                        for (Element category : (List<Element>) child.elements("category")) {
+                        for (Element category : child.elements("category")) {
                             if (category.attribute("text") != null) {
                                 finalCategory += " > " + category.attributeValue("text");
                             } else {

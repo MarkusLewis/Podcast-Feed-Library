@@ -5,6 +5,9 @@ import org.dom4j.QName;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ITunesChannelInfo extends ITunesInfo {
 
@@ -12,7 +15,7 @@ public class ITunesChannelInfo extends ITunesInfo {
         EPISODIC, SERIAL
     }
 
-    //TODO Category
+    private Set<Category> categories;
     private Boolean complete;
     private URL newFeedURL;
     private ITunesOwner owner;
@@ -20,6 +23,30 @@ public class ITunesChannelInfo extends ITunesInfo {
 
     public ITunesChannelInfo(Element parent) {
         super(parent);
+    }
+
+    public Set<Category> getCategories() {
+        if (this.categories != null) {
+            return this.categories;
+        }
+
+        this.categories = new HashSet<>();
+
+        List<Element> categoryElements = this.parent.elements(QName.get("category", this.iTunesNamespace));
+        for (Element categoryElement : categoryElements) {
+            Set<Category> subcategories = new HashSet<>();
+
+            List<Element> subcategoryElements = categoryElement.elements(QName.get("category", this.iTunesNamespace));
+            for (Element subcategoryElement : subcategoryElements) {
+                subcategories.add(new Category(subcategoryElement.attributeValue("text")));
+            }
+
+            Category category = new Category(categoryElement.attributeValue("text"), subcategories);
+
+            this.categories.add(category);
+        }
+
+        return this.categories;
     }
 
     public boolean isComplete() {

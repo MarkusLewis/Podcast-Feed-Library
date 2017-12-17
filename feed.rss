@@ -42,7 +42,10 @@
             <itunes:email>hello@icosillion.com</itunes:email>
         </itunes:owner>
         <itunes:block>no</itunes:block>
-        <itunes:category text="Technology" />
+        <itunes:category text="Technology">
+            <itunes:category text="Tech News" />
+        </itunes:category>
+        <itunes:category text="Business" />
         <itunes:type>serial</itunes:type>
         <item>
             <title>Episode 1: Are you not getting bored yet?</title>
