@@ -10,6 +10,8 @@
         <language>en-GB</language>
         <copyright>Copyright © 2017 Icosillion</copyright>
         <generator>Handcrafted</generator>
+        <category domain="https://podcast-feed-library.owl.im/category/tech">Tech</category>
+        <category>Open Source</category>
         <docs>https://podcast-feed-library.owl.im/docs</docs>
         <ttl>60</ttl>
         <skipHours>

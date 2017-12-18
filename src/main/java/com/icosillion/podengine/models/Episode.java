@@ -74,7 +74,7 @@ public class Episode {
     private URL link;
     private String description;
     private String author;
-    private Set<String> categories;
+    private Set<Category> categories;
     private URL comments;
     private Enclosure enclosure;
     private String guid;
@@ -161,19 +161,21 @@ public class Episode {
         return this.author = authorElement.getText();
     }
 
-    public Set<String> getCategories() {
+    public Set<Category> getCategories() {
         if (this.categories != null) {
             return this.categories;
         }
 
-        List<Element> categoryElements = this.itemElement.elements("category");
+        this.categories = new HashSet<>();
 
-        Set<String> categories = new HashSet<>();
-        for (Element element : categoryElements) {
-            categories.add(element.getTextTrim());
+        for (Element categoryElement : this.itemElement.elements(QName.get("channel", Namespace.NO_NAMESPACE))) {
+            String categoryName = categoryElement.getText();
+            String domain = categoryElement.attributeValue("domain");
+
+            this.categories.add(new Category(categoryName, domain));
         }
 
-        return this.categories = Collections.unmodifiableSet(categories);
+        return this.categories;
     }
 
     public URL getComments() throws MalformedURLException {

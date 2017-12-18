@@ -7,20 +7,31 @@ public class Category {
 
     private String category;
 
+    private String domain;
+
     private Set<Category> subcategories;
 
     public Category(String category) {
-        this(category, new HashSet<Category>());
+        this(category, null);
     }
 
-    public Category(String category, Set<Category> subcategories) {
+    public Category(String category, String domain) {
+        this(category, domain, new HashSet<Category>());
+    }
+
+    public Category(String category, String domain, Set<Category> subcategories) {
         this.category = category;
+        this.domain = domain;
         this.subcategories = subcategories;
     }
 
     public String getName()
     {
         return this.category;
+    }
+
+    public String getDomain() {
+        return this.domain;
     }
 
     public Set<Category> getSubcategories() {
@@ -52,8 +63,14 @@ public class Category {
             return false;
         }
 
-        Category other = (Category) o;
+        return this.hashCode() == o.hashCode();
+    }
 
-        return this.toString().equals(other.toString());
+    @Override
+    public int hashCode() {
+        int result = category.hashCode();
+        result = 31 * result + (domain != null ? domain.hashCode() : 0);
+        result = 31 * result + subcategories.hashCode();
+        return result;
     }
 }

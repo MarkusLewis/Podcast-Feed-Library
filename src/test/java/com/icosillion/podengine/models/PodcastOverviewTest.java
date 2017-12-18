@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -38,7 +40,6 @@ public class PodcastOverviewTest {
         assertEquals(DateUtils.stringToDate("Mon, 12 Dec 2016 15:30:00 GMT"), podcast.getPubDate());
         assertEquals(DateUtils.stringToDate("Mon, 12 Dec 2016 15:30:00 GMT"), podcast.getLastBuildDate());
         assertEquals("Mon, 12 Dec 2016 15:30:00 GMT", podcast.getLastBuildDateString());
-        assertArrayEquals(new String[] { "Technology > Tech News", "Business" }, podcast.getCategories());
         assertEquals("Handcrafted", podcast.getGenerator());
         assertEquals("https://podcast-feed-library.owl.im/docs", podcast.getDocs().toString());
         assertEquals(60, (int) podcast.getTTL());
@@ -56,8 +57,43 @@ public class PodcastOverviewTest {
         assertTrue(skipDays.contains("Monday"));
         assertTrue(skipDays.contains("Wednesday"));
         assertTrue(skipDays.contains("Friday"));
-        assertArrayEquals(new String[] { "podcast", "java", "xml", "dom4j", "icosillion", "maven" } , podcast.getKeywords());
+
         assertEquals(1, podcast.getEpisodes().size());
+    }
+
+    @Test
+    public void testCategoriesWithITunes() {
+        Set<Category> categories = new HashSet<>();
+        categories.add(new Category("Tech", "https://podcast-feed-library.owl.im/category/tech"));
+        categories.add(new Category("Open Source"));
+        Category technology = new Category("Technology");
+        technology.getSubcategories().add(new Category("Tech News"));
+        categories.add(technology);
+        categories.add(new Category("Business"));
+
+        assertEquals(categories, podcast.getCategories(true));
+    }
+
+    @Test
+    public void testCategories() {
+        Set<Category> categories = new HashSet<>();
+        categories.add(new Category("Tech", "https://podcast-feed-library.owl.im/category/tech"));
+        categories.add(new Category("Open Source"));
+
+        assertEquals(categories, podcast.getCategories());
+    }
+
+    @Test
+    public void testKeywords() {
+        Set<String> keywords = new HashSet<>();
+        keywords.add("podcast");
+        keywords.add("java");
+        keywords.add("xml");
+        keywords.add("dom4j");
+        keywords.add("icosillion");
+        keywords.add("maven");
+
+        assertEquals(keywords, podcast.getKeywords());
     }
 
     @Test
@@ -94,17 +130,24 @@ public class PodcastOverviewTest {
 
         assertEquals(2, categories.size());
 
-        Category category = (Category) categories.toArray()[0];
-        assertEquals("Technology", category.getName());
-        assertEquals("Technology > Tech News", category.toString());
-        assertEquals(1, category.getSubcategories().size());
-        Category subcategory = (Category) category.getSubcategories().toArray()[0];
-        assertEquals("Tech News", subcategory.getName());
-
-        category = (Category) categories.toArray()[1];
-        assertEquals("Business", category.getName());
-        assertEquals("Business", category.toString());
-        assertEquals(0, category.getSubcategories().size());
+        for (Category category : categories) {
+            switch (category.getName()) {
+                case "Technology":
+                    assertEquals("Technology > Tech News", category.toString());
+                    assertEquals(1, category.getSubcategories().size());
+                    Category subcategory = (Category) category.getSubcategories().toArray()[0];
+                    assertEquals("Tech News", subcategory.getName());
+                    break;
+                case "Business":
+                    assertEquals("Business", category.getName());
+                    assertEquals("Business", category.toString());
+                    assertEquals(0, category.getSubcategories().size());
+                    break;
+                default:
+                    fail("Unexpected category " + category.getName());
+                    break;
+            }
+        }
     }
 
     @Test

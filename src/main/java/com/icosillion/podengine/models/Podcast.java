@@ -6,10 +6,8 @@ import com.icosillion.podengine.exceptions.MalformedFeedException;
 import com.icosillion.podengine.utils.DateUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import org.dom4j.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -18,6 +16,8 @@ import java.net.URL;
 import java.util.*;
 
 public class Podcast {
+
+    private static final String VERSION = "2.2";
 
     private String xmlData;
     private Document document;
@@ -37,6 +37,8 @@ public class Podcast {
     private Set<String> skipDays;
     private ITunesChannelInfo iTunesChannelInfo;
     private List<Episode> episodes;
+    private Set<String> keywords;
+    private Set<Category> categories;
 
     public Podcast(URL feed) throws InvalidFeedException, MalformedFeedException {
         HttpURLConnection ic = null;
@@ -47,7 +49,7 @@ public class Podcast {
             //Open Connection
             ic = (HttpURLConnection) feed.openConnection();
             ic.setInstanceFollowRedirects(true);
-            ic.setRequestProperty("User-Agent", "PodEngine/2.2");
+            ic.setRequestProperty("User-Agent", "PodEngine/" + Podcast.VERSION);
             is = ic.getInputStream();
 
             //Create BOMInputStream to strip any Byte Order Marks
@@ -130,14 +132,13 @@ public class Podcast {
         }
 
         Element linkElement = this.channelElement.element("link");
-        if (linkElement == null)
+        if (linkElement == null) {
             throw new MalformedFeedException("Missing required link element.");
+        }
 
         if ("atom".equalsIgnoreCase(linkElement.getNamespacePrefix())) {
             return new URL(linkElement.attributeValue("href"));
         }
-
-        //TODO Handle URL Exceptions?
 
         return this.link = new URL(linkElement.getText());
     }
@@ -246,79 +247,32 @@ public class Podcast {
         return this.lastBuildDateString = lastBuildDateElement.getText();
     }
 
-    //TODO Update this with caching
-    public String[] getCategories() {
-        List<String> categories = new ArrayList<>();
-        Element rootElement = this.document.getRootElement();
-        Element channel = rootElement.element("channel");
-        boolean hasiTunes = false;
+    public Set<Category> getCategories() {
+        return this.getCategories(false);
+    }
+
+    public Set<Category> getCategories(boolean includeITunes) {
+        if (this.categories != null) {
+            return this.categories;
+        }
+
+        this.categories = new HashSet<>();
+
+        Element channel = this.document.getRootElement().element("channel");
         if (channel.element("category") != null) {
-            for (Element child : channel.elements("category")) {
-                if (!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
-                    categories.add(child.getText());
-                } else if ("itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
-                    hasiTunes = true;
-                    //Clear Categories
-                    categories.clear();
-                    if (child.elements("category").size() == 0) {
-                        if (child.attribute("text") != null) {
-                            categories.add(child.attributeValue("text"));
-                        } else {
-                            categories.add(child.getText());
-                        }
-                    } else {
-                        String finalCategory;
-                        if (child.attribute("text") != null) {
-                            finalCategory = child.attributeValue("text");
-                        } else {
-                            finalCategory = child.getText();
-                        }
+            for (Element categoryElement : channel.elements(QName.get("category", Namespace.NO_NAMESPACE))) {
+                String categoryName = categoryElement.getText();
+                String domain = categoryElement.attributeValue("domain");
 
-                        for (Element category : (List<Element>) child.elements("category")) {
-                            if (category.attribute("text") != null) {
-                                finalCategory += " > " + category.attributeValue("text");
-                            } else {
-                                finalCategory += " > " + category.getText();
-                            }
-                        }
-                        categories.add(finalCategory);
-                    }
-
-                } else if (hasiTunes && "itunes".equalsIgnoreCase(child.getNamespacePrefix())) {
-                    if (child.elements("category").size() == 0) {
-                        if (child.attribute("text") != null) {
-                            categories.add(child.attributeValue("text"));
-                        } else {
-                            categories.add(child.getText());
-                        }
-                    } else {
-                        String finalCategory;
-                        if (child.attribute("text") != null) {
-                            finalCategory = child.attributeValue("text");
-                        } else {
-                            finalCategory = child.getText();
-                        }
-
-                        for (Element category : child.elements("category")) {
-                            if (category.attribute("text") != null) {
-                                finalCategory += " > " + category.attributeValue("text");
-                            } else {
-                                finalCategory += " > " + category.getText();
-                            }
-                        }
-                        categories.add(finalCategory);
-                    }
-                }
+                this.categories.add(new Category(categoryName, domain));
             }
         }
 
-        if (categories.size() == 0) {
-            return new String[0];
+        if (includeITunes) {
+            this.categories.addAll(this.getITunesInfo().getCategories());
         }
 
-        String[] output = new String[categories.size()];
-        categories.toArray(output);
-        return output;
+        return this.categories;
     }
 
     public String getGenerator() {
@@ -521,14 +475,17 @@ public class Podcast {
         return this.skipDays = Collections.unmodifiableSet(skipDays);
     }
 
-    //TODO Update this with caching and convert to Set<String>
-    public String[] getKeywords() {
-        List<String> keywords = new ArrayList<>();
+    public Set<String> getKeywords() {
+        if (this.keywords != null) {
+            return this.keywords;
+        }
+
+        this.keywords = new HashSet<>();
         Element rootElement = this.document.getRootElement();
         Element channel = rootElement.element("channel");
         boolean hasiTunes = false;
         if (channel.element("keywords") != null) {
-            for (Element child : (List<Element>) channel.elements("keywords")) {
+            for (Element child : channel.elements("keywords")) {
                 if (!"itunes".equalsIgnoreCase(child.getNamespacePrefix()) && !hasiTunes) {
                     for (String kw : child.getText().split(",")) {
                         keywords.add(kw.trim());
@@ -548,13 +505,7 @@ public class Podcast {
             }
         }
 
-        if (keywords.size() == 0) {
-            return new String[0];
-        }
-
-        String[] output = new String[keywords.size()];
-        keywords.toArray(output);
-        return output;
+        return keywords;
     }
 
     //Episodes

@@ -41,7 +41,7 @@ public class ITunesChannelInfo extends ITunesInfo {
                 subcategories.add(new Category(subcategoryElement.attributeValue("text")));
             }
 
-            Category category = new Category(categoryElement.attributeValue("text"), subcategories);
+            Category category = new Category(categoryElement.attributeValue("text"), null, subcategories);
 
             this.categories.add(category);
         }

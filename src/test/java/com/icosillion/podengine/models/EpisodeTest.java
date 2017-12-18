@@ -14,9 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class EpisodeTest {
 
@@ -37,9 +35,6 @@ public class EpisodeTest {
         assertEquals("Our hosts start getting bored of running a testing podcast feed. There's probably some moaning about Apple too. This is a technology podcast after all.", episode.getDescription());
         assertEquals("https://podcast-feed-library.owl.im/episodes/1", episode.getLink().toString());
         assertEquals("Icosillion", episode.getAuthor());
-        Set<String> categories = episode.getCategories();
-        assertTrue(categories.contains("Technology"));
-        assertTrue(categories.contains("Testing"));
         assertEquals("https://podcast-feed-library.owl.im/episodes/1/comments", episode.getComments().toString());
         assertEquals("https://podcast-feed-library.owl.im/episodes/1", episode.getGUID());
         assertEquals(DateUtils.stringToDate("Mon, 28 Nov 2016 13:30:00 GMT"), episode.getPubDate());
@@ -68,5 +63,22 @@ public class EpisodeTest {
         assertEquals(1, (int) iTunesInfo.getOrder());
         assertEquals(1, (int) iTunesInfo.getSeasonNumber());
         assertEquals(1, (int) iTunesInfo.getEpisodeNumber());
+    }
+
+    @Test
+    public void testCategories() {
+        List<Episode> episodes = podcast.getEpisodes();
+        Episode episode = episodes.get(0);
+
+        Set<Category> categories = episode.getCategories();
+        for (Category category : categories) {
+            if (category.getName().equals("Technology")) {
+                assertEquals("Technology", category.getName());
+            } else if (category.getName().equals("Testing")) {
+                assertEquals("Testing", category.getName());
+            } else {
+                fail("Unexpected category " + category.getName());
+            }
+        }
     }
 }
