@@ -5,14 +5,15 @@ import com.icosillion.podengine.exceptions.DateFormatException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtils {
 
     private static SimpleDateFormat[] dateFormats = {
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z"),
-            new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z"),
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z"),
-            new SimpleDateFormat("dd MMM yyyy HH:mm Z")
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US),
+            new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US),
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z", Locale.US),
+            new SimpleDateFormat("dd MMM yyyy HH:mm Z", Locale.US)
     };
 
     public static Date stringToDate(String dt) throws DateFormatException {
