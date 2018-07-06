@@ -28,7 +28,7 @@ dependencies {
         <id>icosillion</id>
         <name>Icosillion Repository</name>
         <url>https://maven.icosillion.com/artifactory/open-source/</url>
-    </repoistory>
+    </repository>
 </repositories>
 
 <dependencies>
