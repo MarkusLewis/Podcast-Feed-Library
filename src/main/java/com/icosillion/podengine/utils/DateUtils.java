@@ -11,10 +11,14 @@ public class DateUtils {
         Date result = parseWithStandardDateFormats(dt);
 
         if (result == null) {
-            return parseWithStandardDateFormats(normalize(dt));
-        } else {
-            return result;
+            result = parseWithStandardDateFormats(normalize(dt));
+
+            if (result == null) {
+                System.out.println("!!! Unable to parse date: " + dt);
+            }
         }
+
+        return result;
     }
 
     private static Date parseWithStandardDateFormats(String dt) {
