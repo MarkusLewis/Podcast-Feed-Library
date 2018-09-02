@@ -9,18 +9,17 @@ import java.util.Locale;
 
 public class DateUtils {
 
-    private static SimpleDateFormat[] dateFormats = {
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US),
-            new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US),
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z", Locale.US),
-            new SimpleDateFormat("dd MMM yyyy HH:mm Z", Locale.US)
-    };
-
     public static Date stringToDate(String dt) throws DateFormatException {
+        SimpleDateFormat[] dateFormats = {
+                new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US),
+                new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US),
+                new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z", Locale.US),
+                new SimpleDateFormat("dd MMM yyyy HH:mm Z", Locale.US)
+        };
 
         Date date = null;
 
-        for (SimpleDateFormat dateFormat : DateUtils.dateFormats) {
+        for (SimpleDateFormat dateFormat : dateFormats) {
             try {
                 date = dateFormat.parse(dt);
                 break;
