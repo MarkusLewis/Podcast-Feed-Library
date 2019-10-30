@@ -139,7 +139,7 @@ public class ITunesItemInfo extends ITunesInfo {
                 this.episodeType = EpisodeType.FULL;
                 break;
             default:
-                this.episodeType = EpisodeType.FULL;
+                this.episodeType = EpisodeType.UNKNOWN;
                 break;
         }
 

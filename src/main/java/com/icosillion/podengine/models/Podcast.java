@@ -22,6 +22,7 @@ public class Podcast {
     private String xmlData;
     private Document document;
     private URL feedURL;
+    private URL resolvedURL;
 
     private Element rootElement, channelElement;
 
@@ -49,6 +50,8 @@ public class Podcast {
             ic.setInstanceFollowRedirects(true);
             ic.setRequestProperty("User-Agent", "PodEngine/2.2");
             is = ic.getInputStream();
+            ubis = new UnicodeBOMInputStream(is);
+            ubis.skipBOM();
 
             //Create BOMInputStream to strip any Byte Order Marks
             bomInputStream = new BOMInputStream(is, false);
@@ -593,5 +596,9 @@ public class Podcast {
 
     public URL getFeedURL() {
         return feedURL;
+    }
+
+    public URL getResolvedURL() {
+        return resolvedURL;
     }
 }
