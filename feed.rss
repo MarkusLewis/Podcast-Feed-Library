@@ -71,5 +71,30 @@
                 The show notes live in this section, but we have nothing else interesting to say.
             </content:encoded>
         </item>
+        <item>
+            <title>Episode 2: Most podcasts have more than one episode</title>
+            <description>Our hosts realize they need a second episode.</description>
+            <pubDate>Tue, 28 Oct 2019 13:30:00 GMT</pubDate>
+            <enclosure url="https://podcast-feed-library.owl.im/audio/episode-1.mp3" length="1234000" type="audio/mp3" />
+            <link>https://podcast-feed-library.owl.im/episodes/2</link>
+            <guid>https://podcast-feed-library.owl.im/episodes/2</guid>
+            <comments>https://podcast-feed-library.owl.im/episodes/2/comments</comments>
+            <category>Technology</category>
+            <category>Testing</category>
+            <source url="http://podcast-feed-library.owl.im/feed.rss">Master Feed</source>
+            <itunes:author>Icosillion</itunes:author>
+            <itunes:subtitle>Our hosts realize they need a second episode.</itunes:subtitle>
+            <itunes:summary>Our hosts realize they need a second episode.</itunes:summary>
+            <itunes:explicit>no</itunes:explicit>
+            <itunes:duration>12:34</itunes:duration>
+            <itunes:block>no</itunes:block>
+            <itunes:image href="https://podcast-feed-library.owl.im/images/artwork.png" />
+            <itunes:isClosedCaptioned>no</itunes:isClosedCaptioned>
+            <itunes:order>2</itunes:order>
+            <itunes:season>1</itunes:season>
+            <itunes:episode>2</itunes:episode>
+            <content:encoded>Our hosts realize they need a second episode.
+            </content:encoded>
+        </item>
     </channel>
 </rss>

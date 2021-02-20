@@ -68,5 +68,15 @@ public class EpisodeTest {
         assertEquals(1, (int) iTunesInfo.getOrder());
         assertEquals(1, (int) iTunesInfo.getSeasonNumber());
         assertEquals(1, (int) iTunesInfo.getEpisodeNumber());
+
+    }
+
+    @Test
+    public void testEpisodeWithExplicitNo()
+    {
+        List<Episode> episodes = podcast.getEpisodes();
+        Episode episode = episodes.get(1);
+        ITunesItemInfo iTunesInfo = episode.getITunesInfo();
+        assertEquals(ITunesInfo.ExplicitLevel.NO, iTunesInfo.getExplicit());
     }
 }

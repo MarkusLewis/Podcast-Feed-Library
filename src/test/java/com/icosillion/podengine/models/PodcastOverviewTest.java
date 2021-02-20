@@ -57,7 +57,7 @@ public class PodcastOverviewTest {
         assertTrue(skipDays.contains("Wednesday"));
         assertTrue(skipDays.contains("Friday"));
         assertArrayEquals(new String[] { "podcast", "java", "xml", "dom4j", "icosillion", "maven" } , podcast.getKeywords());
-        assertEquals(1, podcast.getEpisodes().size());
+        assertEquals(2, podcast.getEpisodes().size());
     }
 
     @Test
