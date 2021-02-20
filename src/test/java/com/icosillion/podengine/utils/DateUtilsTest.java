@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,6 +21,8 @@ public class DateUtilsTest {
         String dateTime = "Tue, 03 March 2009 15:00:00 -0000";
 
         Date date = DateUtils.stringToDate(dateTime);
+
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         assertNotNull(date);
         assertEquals("Tue, 03 Mar 2009 15:00:00 +0000", sdf.format(date));
