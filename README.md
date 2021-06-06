@@ -8,10 +8,14 @@
 * MIT Licensed (Use it for all your commercial things!) 🤑
 
 ## Installation 📦
-### Gradle
+### Gradle (Groovy)
 ```groovy
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    compile 'com.icosillion.podengine:podengine:2.4.1'
+    implementation group: 'com.icosillion.podengine', name: 'podengine', version:'2.4.1'
 }
 ```
 
