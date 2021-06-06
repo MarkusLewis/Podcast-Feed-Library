@@ -1,9 +1,20 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
+  }
+}
+
 plugins {
     id 'com.adarshr.test-logger' version '2.0.0'
 }
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
+apply plugin: 'com.vanniktech.maven.publish'
 
 group = 'com.icosillion.podengine'
 version = '2.4'
@@ -21,6 +32,14 @@ dependencies {
     implementation group: 'org.dom4j', name: 'dom4j', version:'2.0.2'
     implementation group: 'commons-io', name: 'commons-io', version:'2.5'
     testImplementation group: 'junit', name: 'junit', version:'4.12'
+}
+
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
+    }
 }
 
 publishing {
