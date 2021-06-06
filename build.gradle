@@ -1,12 +1,23 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
+  }
+}
+
 plugins {
     id 'com.adarshr.test-logger' version '2.0.0'
 }
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
+apply plugin: 'com.vanniktech.maven.publish'
 
 group = 'com.icosillion.podengine'
-version = '2.4'
+version = '2.4.1'
 
 description = """Simple library to read podcast feeds"""
 
@@ -18,25 +29,15 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.dom4j', name: 'dom4j', version:'2.0.2'
+    implementation group: 'org.dom4j', name: 'dom4j', version:'2.0.3'
     implementation group: 'commons-io', name: 'commons-io', version:'2.5'
     testImplementation group: 'junit', name: 'junit', version:'4.12'
 }
 
-publishing {
-    repositories {
-        maven {
-            url 'https://maven.icosillion.com/artifactory/open-source/'
-            credentials {
-                username project.properties.containsKey("deploymentUser") ? project.properties.get("deploymentUser") : ""
-                password project.properties.containsKey("deploymentPassword") ? project.properties.get("deploymentPassword") : ""
-            }
-        }
-    }
-
-    publications {
-        maven(MavenPublication) {
-            from components.java
+allprojects {
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
         }
     }
 }

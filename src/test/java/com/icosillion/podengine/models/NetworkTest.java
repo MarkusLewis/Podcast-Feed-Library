@@ -16,16 +16,6 @@ import static org.junit.Assert.fail;
 public class NetworkTest {
 
     @Test
-    public void testPodcastFeed() {
-        try {
-            Podcast podcast = new Podcast(new URL("https://rss.art19.com/tim-ferriss-show"));
-            assertEquals("The Tim Ferriss Show", podcast.getTitle());
-        } catch (InvalidFeedException | MalformedURLException | MalformedFeedException e) {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
     public void testRelayFeed() {
         try {
             Podcast podcast = new Podcast(new URL("https://www.relay.fm/master/feed"));
