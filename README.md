@@ -1,4 +1,4 @@
-# PodEngine 2.4 – Podcast Feed Library
+# PodEngine 2.4.1 – Podcast Feed Library
 
 ## Java library for parsing your podcast feeds 🚀
 * Written in Java 7 🤖
@@ -10,32 +10,18 @@
 ## Installation 📦
 ### Gradle
 ```groovy
-repositories {
-    maven {
-        url 'https://maven.icosillion.com/artifactory/open-source/'
-    }
-}
-
 dependencies {
-    compile 'com.icosillion.podengine:podengine:2.4'
+    compile 'com.icosillion.podengine:podengine:2.4.1'
 }
 ```
 
 ### Maven
 ```xml
-<repositories>
-    <repository>
-        <id>icosillion</id>
-        <name>Icosillion Repository</name>
-        <url>https://maven.icosillion.com/artifactory/open-source/</url>
-    </repository>
-</repositories>
-
 <dependencies>
     <dependency>
         <groupId>com.icosillion.podengine</groupId>
         <artifactId>podengine</artifactId>
-        <version>2.4</version>
+        <version>2.4.1</version>
     </dependency>
 </dependencies>
 ```
