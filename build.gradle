@@ -42,20 +42,20 @@ allprojects {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            url 'https://maven.icosillion.com/artifactory/open-source/'
-            credentials {
-                username project.properties.containsKey("deploymentUser") ? project.properties.get("deploymentUser") : ""
-                password project.properties.containsKey("deploymentPassword") ? project.properties.get("deploymentPassword") : ""
-            }
-        }
-    }
+// publishing {
+//     repositories {
+//         maven {
+//             url 'https://maven.icosillion.com/artifactory/open-source/'
+//             credentials {
+//                 username project.properties.containsKey("deploymentUser") ? project.properties.get("deploymentUser") : ""
+//                 password project.properties.containsKey("deploymentPassword") ? project.properties.get("deploymentPassword") : ""
+//             }
+//         }
+//     }
 
-    publications {
-        maven(MavenPublication) {
-            from components.java
-        }
-    }
-}
+//     publications {
+//         maven(MavenPublication) {
+//             from components.java
+//         }
+//     }
+// }
